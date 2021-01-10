@@ -14,6 +14,20 @@
             <Setter Property="Height" Value="30" />
             <Setter Property="Width" Value="175" />
         </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                    <Setter Property="Validation.ErrorTemplate">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Label Content="*" Foreground="Red" Margin="122,-6,0,0" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
@@ -23,7 +37,7 @@
             Source="..\Images\Banner.bmp"
             Stretch="Fill" />
         <StackPanel
-            Height="235"
+            Height="366"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             DockPanel.Dock="Left"
@@ -52,6 +66,22 @@
                 Command="{Binding QuitCommand}"
                 Content="Quit"
                 Style="{StaticResource HomePageButtonStyle}" />
+            <StackPanel>
+                <Label
+                    Width="94"
+                    HorizontalAlignment="Left"
+                    Content="Shutdown time: " />
+                <TextBox
+                    Width="125"
+                    Margin="4,-5,0,0"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource TextBoxStyle}"
+                    Text="{Binding ShutdownTime, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Width="174" Orientation="Horizontal">
+                    <Label Content="Shutdown machine:" />
+                    <CheckBox Height="15" IsChecked="{Binding IsMachineShutdown, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
         <TextBox
             Height="366"

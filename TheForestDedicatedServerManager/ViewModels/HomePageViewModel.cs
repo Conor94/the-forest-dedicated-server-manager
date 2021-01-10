@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
@@ -27,12 +28,35 @@ namespace TheForestDedicatedServerManager.ViewModels
         private DelegateCommand mScheduleShutdownCommand;
         private DelegateCommand mCancelShutdownCommand;
         private DelegateCommand mQuitCommand;
+        private bool mIsMachineShutdown;
+        private string mShutdownTime;
 
         // Public properties
         public string ServerOutputText
         {
             get => mServerOutputText;
             set => SetProperty(ref mServerOutputText, value);
+        }
+        public string ShutdownTime
+        {
+            get => mShutdownTime;
+            set
+            {
+                SetProperty(ref mShutdownTime, value);
+                ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+            }
+        }
+        public bool IsMachineShutdown
+        {
+            get => mIsMachineShutdown;
+            set
+            {
+                SetProperty(ref mIsMachineShutdown, value);
+                AppConfig config = AppConfigurationManager.GetSettings();
+                config.IsMachineShutdownScheduled = value;
+                AppConfigurationManager.Save();
+            }
         }
         // Commands
         public DelegateCommand CheckStatusCommand
@@ -73,9 +97,16 @@ namespace TheForestDedicatedServerManager.ViewModels
         /// <param name="validators"><inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/></param>
         public HomePageViewModel(IEventAggregator eventAggregator, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, validators)
         {
-            AppConfig appConfig = AppConfigurationManager.GetSettings();
-            mServerProcessName = Path.GetFileNameWithoutExtension(appConfig.TheForestServerManagerExecutablePath);
+            AppConfig config = AppConfigurationManager.GetSettings();
+            mServerProcessName = config.ServerProcessName;
             ServerOutputText = "";
+            ShutdownTime = null;
+            AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
+
+            StartServerCommand.RaiseCanExecuteChanged();
+            ShutdownServerCommand.RaiseCanExecuteChanged();
+            ScheduleShutdownCommand.RaiseCanExecuteChanged();
+            CancelShutdownCommand.RaiseCanExecuteChanged();
         }
         #endregion
 
@@ -115,10 +146,12 @@ namespace TheForestDedicatedServerManager.ViewModels
                     AppendServerOutputText("Dedicated server has been started.");
                     ShutdownServerCommand.RaiseCanExecuteChanged();
                     StartServerCommand.RaiseCanExecuteChanged();
+                    ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                    CancelShutdownCommand.RaiseCanExecuteChanged();
                 }
                 else
                 {
-                    MessageBox.Show($"Dedicated server did not start successfully.");
+                    AppendServerOutputText("Dedicated server did not start successfully.");
                 }
             }
             catch (Win32Exception)
@@ -147,23 +180,26 @@ namespace TheForestDedicatedServerManager.ViewModels
                 Thread.Sleep(100);
                 if (processes[0].HasExited)
                 {
-                    ShutdownServerCommand.RaiseCanExecuteChanged();
-                    StartServerCommand.RaiseCanExecuteChanged();
-                    MessageBox.Show("Dedicated server has been shutdown.");
+                    AppendServerOutputText("Dedicated server has been shutdown.");
                 }
                 else
                 {
-                    MessageBox.Show("Dedicated server failed to shutdown.");
+                    AppendServerOutputText("Dedicated server failed to shutdown.");
                 }
             }
             else if (processes.Length == 0)
             {
-                MessageBox.Show("Dedicated server is not running.");
+                AppendServerOutputText("Dedicated server is not running.");
             }
             else if (processes.Length > 1)
             {
                 throw new Exception("Multiple processes with the same name found.");
             }
+
+            ShutdownServerCommand.RaiseCanExecuteChanged();
+            StartServerCommand.RaiseCanExecuteChanged();
+            ScheduleShutdownCommand.RaiseCanExecuteChanged();
+            CancelShutdownCommand.RaiseCanExecuteChanged();
         }
         private bool ShutdownServerCanExecute()
         {
@@ -172,20 +208,58 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         private void ScheduleShutdownExecute()
         {
-            throw new NotImplementedException();
+            AppConfig config = AppConfigurationManager.GetSettings();
+            ServiceController controller = new ServiceController(config.ServiceName);
+            if (controller.Status != ServiceControllerStatus.Running)
+            {
+                // Save the shutdown time to the shared file
+                config.ShutdownTime = DateTime.Parse(ShutdownTime);
+                AppConfigurationManager.Save();
+
+                // Start the service
+                controller.Start();              
+                Thread.Sleep(100);
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+                if (config.IsMachineShutdownScheduled)
+                {
+                    AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}. A machine shutdown is also scheduled.");
+                }
+                else
+                {
+                    AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}.");
+                }
+            }
+            else
+            {
+                string errorMsg = "Application attemped to schedule a shutdown when the shutdown scheduler service was already started.";
+                AppendServerOutputText(errorMsg);
+            }
         }
         private bool ScheduleShutdownCanExecute()
         {
-            return CheckServerStatus();
+            return CheckServerStatus() && ValidateShutdownTime(ShutdownTime) == "";
         }
 
         private void CancelShutdownExecute()
         {
-            throw new NotImplementedException();
+            AppConfig config = AppConfigurationManager.GetSettings();
+            ServiceController controller = new ServiceController(config.ServiceName);
+            if (controller.Status == ServiceControllerStatus.Running)
+            {
+                controller.Stop();
+                Thread.Sleep(100);
+                AppendServerOutputText("Scheduled shutdown has been cancelled.");
+                ShutdownServerCommand.RaiseCanExecuteChanged();
+                StartServerCommand.RaiseCanExecuteChanged();
+                ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+            }
         }
         private bool CancelShutdownCanExecute()
         {
-            return false;
+            AppConfig config = AppConfigurationManager.GetSettings();
+            ServiceController controller = new ServiceController(config.ServiceName);
+            return controller.Status == ServiceControllerStatus.Running;
         }
 
         private void QuitExecute()
@@ -195,6 +269,29 @@ namespace TheForestDedicatedServerManager.ViewModels
         private bool QuitCanExecute()
         {
             return true;
+        }
+        #endregion
+
+        #region Validators
+        private string ValidateShutdownTime(object arg)
+        {
+            string errorMessage = "";
+            if (arg is string shutdownTime && !string.IsNullOrWhiteSpace(shutdownTime))
+            {
+                if (!DateTime.TryParse(shutdownTime, out DateTime tmpShutdownTime))
+                {
+                    errorMessage = "Shutdown time is not valid.";
+                }
+                else if (tmpShutdownTime < DateTime.Now)
+                {
+                    errorMessage = "Shutdown time cannot be in the past.";
+                }
+            }
+            else
+            {
+                errorMessage = "Shutdown time cannot be empty.";
+            }
+            return errorMessage;
         }
         #endregion
 
