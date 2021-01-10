@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.IO;
 
 namespace AppConfiguration
 {
@@ -17,11 +19,32 @@ namespace AppConfiguration
             get => (string)this["TheForestServerManagerExecutablePath"];
             private set => this["TheForestServerManagerExecutablePath"] = value;
         }
+        [ConfigurationProperty("ServerProcessName")]
+        public string ServerProcessName
+        {
+            get => (string)this["ServerProcessName"];
+            private set => this["ServerProcessName"] = value;
+        }
         [ConfigurationProperty("ServerArguments")]
         public string ServerArguments
         {
             get => (string)this["ServerArguments"];
             private set => this["ServerArguments"] = value;
+        }
+        /// <summary>
+        /// Determines whether a machine shutdown is scheduled along with a scheduled dedicated server shutdown.
+        /// </summary>
+        [ConfigurationProperty("IsMachineShutdownScheduled")]
+        public bool IsMachineShutdownScheduled
+        {
+            get => (bool)this["IsMachineShutdownScheduled"];
+            set => this["IsMachineShutdownScheduled"] = value;
+        }
+        [ConfigurationProperty("ShutdownTime")]
+        public DateTime ShutdownTime
+        {
+            get => (DateTime)this["ShutdownTime"];
+            set => this["ShutdownTime"] = value;
         }
         #endregion
 
@@ -31,6 +54,7 @@ namespace AppConfiguration
             //! hardcoded values for now
             ServiceName = "TheForestDedicatedServerManagerService";
             TheForestServerManagerExecutablePath = @"C:\Program Files (x86)\Steam\steamapps\common\TheForestDedicatedServer\TheForestDedicatedServer.exe";
+            ServerProcessName = Path.GetFileNameWithoutExtension(TheForestServerManagerExecutablePath);
             ServerArguments = "-batchmode -dedicated -nographics -nosteamclient";
         }
         #endregion
