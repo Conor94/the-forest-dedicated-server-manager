@@ -1,8 +1,11 @@
-﻿using DotNetExtensions;
+﻿using AppConfiguration;
+using DotNetExtensions;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Timers;
 
 namespace TheForestDedicatedServerManagerService
@@ -10,9 +13,9 @@ namespace TheForestDedicatedServerManagerService
     public partial class Service : ServiceBase
     {
         #region Fields and properties
-        private Timer mShutdownTimer;
+        private System.Timers.Timer mShutdownTimer;
 
-        public Timer ShutdownTimer
+        public System.Timers.Timer ShutdownTimer
         {
             get => mShutdownTimer;
             set => mShutdownTimer = value;
@@ -38,12 +41,32 @@ namespace TheForestDedicatedServerManagerService
         {
             try
             {
+                // Change the current working directory to the applications base directory. This must be done
+                // because the default working directory for services is %SYSTEMROOT%\System32.
+                Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+                AppConfigurationManager.Init(@".\AppConfiguration.exe");
+                AppConfig config = AppConfigurationManager.GetSettings();
+
                 // schedule a timer for the shutdown time
-                ShutdownTimer = new Timer()
+                DateTime currentTime = DateTime.Now;
+                DateTime shutdownTime = config.ShutdownTime;
+                if (shutdownTime > currentTime)
                 {
-                    Interval = 0,
-                    AutoReset = false
-                };
+                    ShutdownTimer = new System.Timers.Timer()
+                    {
+                        Interval = (shutdownTime - currentTime).TotalMilliseconds,
+                        AutoReset = false
+                    }; 
+                }
+                else
+                {
+                    // Shutdown time was in the past (the GUI application should prevent this), so the timer can't be started.
+                    // Log a message and then stop the service.
+                    EventLog.WriteEntry("Shutdown timer was not started because the specified shutdown time was in the past.\n" +
+                                            $"Current time: {currentTime}\n" +
+                                            $"Shutdown time: {shutdownTime}");
+                    Stop();
+                }
                 ShutdownTimer.Elapsed += ShutdownTimer_OnElapsed;
                 ShutdownTimer.Start();
             }
@@ -57,6 +80,10 @@ namespace TheForestDedicatedServerManagerService
         {
             try
             {
+                AppConfig config = AppConfigurationManager.GetSettings();
+                config.IsMachineShutdownScheduled = false;
+                config.ShutdownTime = DateTime.MinValue;
+                AppConfigurationManager.Save();
             }
             catch (Exception e)
             {
@@ -70,6 +97,7 @@ namespace TheForestDedicatedServerManagerService
             {
                 // system was shutdown
                 // abort the scheduled tasks (shutting down server and/or shutting down system)
+                Stop();
             }
             catch (Exception e)
             {
@@ -85,6 +113,7 @@ namespace TheForestDedicatedServerManagerService
                 {
                     // user logged off
                     // abort the scheduled tasks (shutting down server and/or shutting down system)
+                    Stop();
                 }
             }
             catch (Exception e)
@@ -97,9 +126,48 @@ namespace TheForestDedicatedServerManagerService
         #region Event handlers
         private void ShutdownTimer_OnElapsed(object sender, ElapsedEventArgs e)
         {
-            // check app configuration to see what needs to be done (shutdown server, server, or both)
-            // shutdown system if needed
-            // shutdown server if needed
+            try
+            {
+                // Shutdown server
+                AppConfig config = AppConfigurationManager.GetSettings();
+                Process[] processes = Process.GetProcessesByName(config.ServerProcessName);
+                if (processes.Length == 1)
+                {
+                    processes[0].Kill();
+                    Thread.Sleep(100);
+                    if (processes[0].HasExited)
+                    {
+                        EventLog.WriteEntry("Dedicated server has been shutdown.");
+                    }
+                    else
+                    {
+                        EventLog.WriteEntry("Dedicated server failed to shutdown.");
+                    }
+                }
+                else if (processes.Length == 0)
+                {
+                    EventLog.WriteEntry($"{ServiceName} attempted to shutdown the server while the server was not running.");
+                }
+                else if (processes.Length > 1)
+                {
+                    throw new Exception("Multiple processes with the same name found.");
+                }
+
+                // Shutdown the system if needed
+                if (config.IsMachineShutdownScheduled)
+                {
+                    ShutdownMachine();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException("Exception occurred when the shutdown timer elapsed.", ex);
+            }
+            finally
+            {
+                // Stop the service
+                Stop();
+            }
         }
         #endregion
 
@@ -115,6 +183,28 @@ namespace TheForestDedicatedServerManagerService
             }
             EventLog.WriteEntry($"{friendlyMessage}\n\n" +
                                 exceptionInfo.ToString());
+        }
+
+        /// <summary>
+        /// Runs a command that shuts down the system.
+        /// </summary>
+        private void ShutdownMachine()
+        {
+            // Test creating a process to call a command
+            Process process = new Process()
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    FileName = "cmd.exe",
+                    Arguments = "/C shutdown /s",
+                    WindowStyle = ProcessWindowStyle.Hidden
+                },
+            };
+            EventLog.WriteEntry($"{ServiceName} is shutting down the system.");
+            process.Start();
+            process.Dispose();
         }
         #endregion
     }
