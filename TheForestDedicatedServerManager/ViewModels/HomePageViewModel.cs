@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
+using System.Windows.Media;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
 
@@ -19,15 +20,15 @@ namespace TheForestDedicatedServerManager.ViewModels
         private string mServerProcessName;
         // Fields with public properties
         private string mServerOutputText;
+        private string mShutdownTime;
+        private bool mIsMachineShutdown;
+        private Brush mServerStatusColour;
         // Commands
-        private DelegateCommand mCheckStatusCommand;
         private DelegateCommand mStartServerCommand;
         private DelegateCommand mShutdownServerCommand;
         private DelegateCommand mScheduleShutdownCommand;
         private DelegateCommand mCancelShutdownCommand;
         private DelegateCommand mQuitCommand;
-        private bool mIsMachineShutdown;
-        private string mShutdownTime;
 
         // Public properties
         public string ServerOutputText
@@ -56,11 +57,12 @@ namespace TheForestDedicatedServerManager.ViewModels
                 AppConfigurationManager.Save();
             }
         }
-        // Commands
-        public DelegateCommand CheckStatusCommand
+        public Brush ServerStatusColour
         {
-            get => mCheckStatusCommand ?? (mCheckStatusCommand = new DelegateCommand(CheckStatusExecute, CheckStatusCanExecute));
+            get => mServerStatusColour;
+            set => SetProperty(ref mServerStatusColour, value);
         }
+        // Commands
         public DelegateCommand StartServerCommand
         {
             get => mStartServerCommand ?? (mStartServerCommand = new DelegateCommand(StartServerExecute, StartServerCanExecute));
@@ -84,6 +86,14 @@ namespace TheForestDedicatedServerManager.ViewModels
         }
         #endregion
 
+        #region Events
+        public event EventHandler ServerStatusChange;
+        protected virtual void RaiseServerStatusChange()
+        {
+            ServerStatusChange?.Invoke(this, EventArgs.Empty);
+        }
+        #endregion
+
         #region Constructors
         /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
         public HomePageViewModel(IEventAggregator eventAggregator) : this(eventAggregator, null)
@@ -101,30 +111,17 @@ namespace TheForestDedicatedServerManager.ViewModels
             ShutdownTime = null;
             AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
 
+            ServerStatusChange += HomePageViewModel_OnServerStatusChange;
+
             StartServerCommand.RaiseCanExecuteChanged();
             ShutdownServerCommand.RaiseCanExecuteChanged();
             ScheduleShutdownCommand.RaiseCanExecuteChanged();
             CancelShutdownCommand.RaiseCanExecuteChanged();
+            RaiseServerStatusChange();
         }
         #endregion
 
         #region Command methods
-        private void CheckStatusExecute()
-        {
-            if (CheckServerStatus())
-            {
-                AppendServerOutputText("The server is running.");
-            }
-            else
-            {
-                AppendServerOutputText("The server is not running.");
-            }
-        }
-        private bool CheckStatusCanExecute()
-        {
-            return true;
-        }
-
         private void StartServerExecute()
         {
             AppConfig appConfig = AppConfigurationManager.GetSettings();
@@ -146,6 +143,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                     StartServerCommand.RaiseCanExecuteChanged();
                     ScheduleShutdownCommand.RaiseCanExecuteChanged();
                     CancelShutdownCommand.RaiseCanExecuteChanged();
+                    RaiseServerStatusChange();
                 }
                 else
                 {
@@ -179,6 +177,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                 if (processes[0].HasExited)
                 {
                     AppendServerOutputText("Dedicated server has been shutdown.");
+                    RaiseServerStatusChange();
                 }
                 else
                 {
@@ -290,6 +289,21 @@ namespace TheForestDedicatedServerManager.ViewModels
                 errorMessage = "Shutdown time cannot be empty.";
             }
             return errorMessage;
+        }
+        #endregion
+
+        #region Event handlers
+        private void HomePageViewModel_OnServerStatusChange(object sender, EventArgs e)
+        {
+            // Check if the server is running
+            if (CheckServerStatus())
+            {
+                ServerStatusColour = new SolidColorBrush(Colors.Lime);
+            }
+            else
+            {
+                ServerStatusColour = new SolidColorBrush(Colors.Red);
+            }
         }
         #endregion
 

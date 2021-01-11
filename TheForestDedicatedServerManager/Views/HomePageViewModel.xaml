@@ -21,7 +21,10 @@
                     <Setter Property="Validation.ErrorTemplate">
                         <Setter.Value>
                             <ControlTemplate>
-                                <Label Content="*" Foreground="Red" Margin="122,-6,0,0" />
+                                <Label
+                                    Margin="122,-6,0,0"
+                                    Content="*"
+                                    Foreground="Red" />
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -42,10 +45,13 @@
             VerticalAlignment="Top"
             DockPanel.Dock="Left"
             Orientation="Vertical">
-            <Button
-                Command="{Binding CheckStatusCommand}"
-                Content="Check Status"
-                Style="{StaticResource HomePageButtonStyle}" />
+            <StackPanel Orientation="Horizontal">
+                <Label HorizontalContentAlignment="Right" Content="Server Status:" />
+                <Rectangle
+                    Width="20"
+                    Height="18"
+                    Fill="{Binding ServerStatusColour}" />
+            </StackPanel>
             <Button
                 Command="{Binding StartServerCommand}"
                 Content="Start Server"
