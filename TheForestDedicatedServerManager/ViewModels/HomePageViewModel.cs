@@ -5,10 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.ServiceProcess;
 using System.Threading;
-using System.Windows;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
 
@@ -217,7 +215,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                 AppConfigurationManager.Save();
 
                 // Start the service
-                controller.Start();              
+                controller.Start();
                 Thread.Sleep(100);
                 CancelShutdownCommand.RaiseCanExecuteChanged();
                 if (config.IsMachineShutdownScheduled)

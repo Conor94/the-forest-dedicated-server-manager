@@ -56,7 +56,7 @@ namespace TheForestDedicatedServerManagerService
                     {
                         Interval = (shutdownTime - currentTime).TotalMilliseconds,
                         AutoReset = false
-                    }; 
+                    };
                 }
                 else
                 {
