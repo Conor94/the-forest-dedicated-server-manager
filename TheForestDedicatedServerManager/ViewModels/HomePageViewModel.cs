@@ -118,7 +118,7 @@ namespace TheForestDedicatedServerManager.ViewModels
             mServerProcessName = config.ServerProcessName;
             ServerOutputText = "";
             ShutdownTime = null;
-            
+
             // Add validator methods for properties
             AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
 

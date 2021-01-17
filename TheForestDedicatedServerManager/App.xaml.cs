@@ -39,10 +39,13 @@ namespace TheForestDedicatedServerManager
         /// <inheritdoc/>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.Register<MainWindow>(); // don't need this, but it's more explicit
+            // Register transients
+            containerRegistry.Register<IContainerProvider, UnityContainerExtension>();
             containerRegistry.Register<IEventAggregator, EventAggregator>();
             containerRegistry.Register<SetupViewModel>();
-            containerRegistry.Register<IContainerProvider, UnityContainerExtension>();
+
+            // Register singletons
+            containerRegistry.RegisterSingleton<MainWindow>(); // don't need this, but it's more explicit
         }
 
         /// <summary>

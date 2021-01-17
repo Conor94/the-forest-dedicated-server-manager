@@ -2,7 +2,6 @@
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using TheForestDedicatedServerManager.Events;
 
 namespace TheForestDedicatedServerManager.Base

@@ -11,6 +11,13 @@
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <Window.Resources>
+        <Style x:Key="WindowButton" TargetType="Button">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="120" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <Label
             Margin="15,20,0,0"
@@ -34,13 +41,6 @@
             VerticalAlignment="Top"
             Command="{Binding BrowseCommand}"
             Content="Browse" />
-        <Button
-            Width="120"
-            Margin="228,101,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding SaveSettingsCommand}"
-            Content="Save" />
         <Label
             Width="213"
             Margin="15,57,0,0"
@@ -56,5 +56,19 @@
             VerticalAlignment="Top"
             Style="{StaticResource TextBoxStyle}"
             Text="{Binding ServerArguments, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <Button
+            Margin="148,101,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding SaveSetupCommand}"
+            Content="Save"
+            Style="{StaticResource WindowButton}" />
+        <Button
+            Margin="286,101,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Command="{Binding CancelSetupCommand}"
+            Content="Cancel"
+            Style="{StaticResource WindowButton}" />
     </Grid>
 </Window>

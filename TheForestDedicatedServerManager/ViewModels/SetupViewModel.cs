@@ -5,7 +5,6 @@ using Prism.Events;
 using Prism.Ioc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
@@ -18,9 +17,10 @@ namespace TheForestDedicatedServerManager.ViewModels
     {
         #region Fields and properties
         private string mTheForestDeducatedServerExePath;
-        private DelegateCommand mSaveSettings;
+        private DelegateCommand mSaveSetupCommand;
         private DelegateCommand mBrowseCommand;
         private string mServerArguments;
+        private DelegateCommand mCancelSetupCommand;
 
         public string TheForestDedicatedServerExePath
         {
@@ -29,7 +29,7 @@ namespace TheForestDedicatedServerManager.ViewModels
             {
                 if (SetProperty(ref mTheForestDeducatedServerExePath, value))
                 {
-                    SaveSettingsCommand.RaiseCanExecuteChanged();
+                    SaveSetupCommand.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -38,15 +38,20 @@ namespace TheForestDedicatedServerManager.ViewModels
             get => mServerArguments;
             set => SetProperty(ref mServerArguments, value);
         }
-        public DelegateCommand SaveSettingsCommand
+        public DelegateCommand SaveSetupCommand
         {
-            get => mSaveSettings ?? (mSaveSettings = new DelegateCommand(SaveSettingsExecute, SaveSettingsCanExecute));
-            set => mSaveSettings = value;
+            get => mSaveSetupCommand ?? (mSaveSetupCommand = new DelegateCommand(SaveSetupExecute, SaveSetupCanExecute));
+            set => mSaveSetupCommand = value;
         }
         public DelegateCommand BrowseCommand
         {
             get => mBrowseCommand ?? (mBrowseCommand = new DelegateCommand(BrowseExecute));
             set => mBrowseCommand = value;
+        }
+        public DelegateCommand CancelSetupCommand
+        {
+            get => mCancelSetupCommand ?? (mCancelSetupCommand = new DelegateCommand(CancelSetupExecute));
+            set => mCancelSetupCommand = value;
         }
         #endregion
 
@@ -64,17 +69,17 @@ namespace TheForestDedicatedServerManager.ViewModels
             Title = "Setup";
             TheForestDedicatedServerExePath = config.TheForestServerManagerExecutablePath;
             ServerArguments = config.ServerArguments;
-            
+
             // Add validator methods for properties
             AddValidator(nameof(TheForestDedicatedServerExePath), ValidateTheForestDedicatedServerExePath);
 
             // Raise events
-            SaveSettingsCommand.RaiseCanExecuteChanged();
+            SaveSetupCommand.RaiseCanExecuteChanged();
         }
         #endregion
 
         #region Command methods
-        private void SaveSettingsExecute()
+        private void SaveSetupExecute()
         {
             try
             {
@@ -84,7 +89,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                 config.IsSetupSaved = true;
                 if (AppConfigurationManager.Save())
                 {
-                    EventAggregator.GetEvent<CloseWindowRequestEvent>().Publish();
+                    CloseWindow();
                 }
             }
             catch (Exception e)
@@ -94,9 +99,14 @@ namespace TheForestDedicatedServerManager.ViewModels
                                 $"StackTrace: {e.StackTrace}");
             }
         }
-        private bool SaveSettingsCanExecute()
+        private bool SaveSetupCanExecute()
         {
             return TheForestDedicatedServerExePath != "" && ValidateTheForestDedicatedServerExePath(TheForestDedicatedServerExePath) == "";
+        }
+
+        private void CancelSetupExecute()
+        {
+            CloseWindow();
         }
 
         private void BrowseExecute()
@@ -104,7 +114,8 @@ namespace TheForestDedicatedServerManager.ViewModels
             OpenFileDialog dialog = new OpenFileDialog()
             {
                 Filter = "Application|*.exe",
-                DefaultExt = "exe"
+                DefaultExt = "exe",
+                CheckPathExists = true
             };
             if (dialog.ShowDialog() == true)
             {
@@ -119,7 +130,7 @@ namespace TheForestDedicatedServerManager.ViewModels
             string errorMessage = "";
             if (value is string exePath)
             {
-                if (!File.Exists(exePath))
+                if (!File.Exists(exePath) && exePath != "")
                 {
                     errorMessage = "Server executable path is not valid.";
                 }
@@ -130,6 +141,13 @@ namespace TheForestDedicatedServerManager.ViewModels
             {
                 throw new Exception($"Argument must be of type '{typeof(string)}'.");
             }
+        }
+        #endregion
+
+        #region Helper methods
+        private void CloseWindow()
+        {
+            EventAggregator.GetEvent<CloseWindowRequestEvent>().Publish();
         }
         #endregion
     }
