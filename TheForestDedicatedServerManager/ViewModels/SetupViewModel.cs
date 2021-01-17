@@ -2,8 +2,10 @@
 using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
@@ -50,16 +52,24 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         #region Constructors
         [InjectionConstructor]
-        public SetupViewModel(IEventAggregator eventAggregator) : this(eventAggregator, null)
+        public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container) : this(eventAggregator, container, null)
         {
         }
 
-        public SetupViewModel(IEventAggregator eventAggregator, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, validators)
+        public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
         {
+            AppConfig config = AppConfigurationManager.GetSettings();
+
+            // Initialize properties
             Title = "Setup";
-            TheForestDedicatedServerExePath = "";
-            SaveSettingsCommand.RaiseCanExecuteChanged();
+            TheForestDedicatedServerExePath = config.TheForestServerManagerExecutablePath;
+            ServerArguments = config.ServerArguments;
+            
+            // Add validator methods for properties
             AddValidator(nameof(TheForestDedicatedServerExePath), ValidateTheForestDedicatedServerExePath);
+
+            // Raise events
+            SaveSettingsCommand.RaiseCanExecuteChanged();
         }
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -29,18 +30,18 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         #region Constructors
         [InjectionConstructor]
-        public MainWindowViewModel(IEventAggregator eventAggregator) : base(eventAggregator)
+        public MainWindowViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
         {
             EventAggregator.GetEvent<QuitEvent>().Subscribe(QuitExecute);
 
             Title = "The Forest Dedicated Server Manager";
-            SelectedViewModel = new HomePageViewModel(eventAggregator);
+            SelectedViewModel = new HomePageViewModel(eventAggregator, container);
         }
 
         /// <summary>
         /// Constructor for the <see cref="MainWindowViewModel"/>.
         /// </summary>
-        public MainWindowViewModel(IEventAggregator eventAggregator, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, validators)
+        public MainWindowViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
         {
         }
         #endregion

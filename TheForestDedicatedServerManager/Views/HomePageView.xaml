@@ -55,22 +55,25 @@
                 Command="{Binding QuitCommand}"
                 Content="Quit"
                 Style="{StaticResource HomePageButtonStyle}" />
-            <StackPanel>
-                <Label
-                    Width="94"
-                    HorizontalAlignment="Left"
-                    Content="Shutdown time: " />
-                <TextBox
-                    Style="{StaticResource TextBoxStyle}"
-                    Width="125"
-                    Margin="4,-5,0,0"
-                    HorizontalAlignment="Left"
-                    Text="{Binding ShutdownTime, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
-                <StackPanel Width="174" Orientation="Horizontal">
-                    <Label Content="Shutdown machine:" />
-                    <CheckBox Height="15" IsChecked="{Binding IsMachineShutdown, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+            <Label
+                Width="94"
+                HorizontalAlignment="Left"
+                Content="Shutdown time: " />
+            <TextBox
+                Width="125"
+                Margin="4,-5,0,0"
+                HorizontalAlignment="Left"
+                Style="{StaticResource TextBoxStyle}"
+                Text="{Binding ShutdownTime, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel Width="174" Orientation="Horizontal">
+                <Label Content="Shutdown machine:" />
+                <CheckBox Height="15" IsChecked="{Binding IsMachineShutdown, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
+            <Button
+                Width="75"
+                Margin="0,10,0,0"
+                Command="{Binding EditSetupCommand}"
+                Content="Edit Setup" />
         </StackPanel>
         <TextBox
             Height="366"

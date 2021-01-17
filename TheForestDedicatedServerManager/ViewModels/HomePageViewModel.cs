@@ -1,6 +1,7 @@
 ﻿using AppConfiguration;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Ioc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Windows.Media;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
+using TheForestDedicatedServerManager.Views;
 
 namespace TheForestDedicatedServerManager.ViewModels
 {
@@ -29,6 +31,7 @@ namespace TheForestDedicatedServerManager.ViewModels
         private DelegateCommand mScheduleShutdownCommand;
         private DelegateCommand mCancelShutdownCommand;
         private DelegateCommand mQuitCommand;
+        private DelegateCommand mEditSetupCommand;
 
         // Public properties
         public string ServerOutputText
@@ -81,8 +84,13 @@ namespace TheForestDedicatedServerManager.ViewModels
         }
         public DelegateCommand QuitCommand
         {
-            get => mQuitCommand ?? (mQuitCommand = new DelegateCommand(QuitExecute, QuitCanExecute));
+            get => mQuitCommand ?? (mQuitCommand = new DelegateCommand(QuitExecute));
             private set => mQuitCommand = value;
+        }
+        public DelegateCommand EditSetupCommand
+        {
+            get => mEditSetupCommand ?? (mEditSetupCommand = new DelegateCommand(EditSetupExecute));
+            set => mEditSetupCommand = value;
         }
         #endregion
 
@@ -96,23 +104,28 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         #region Constructors
         /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
-        public HomePageViewModel(IEventAggregator eventAggregator) : this(eventAggregator, null)
+        public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container) : this(eventAggregator, container, null)
         {
         }
 
         /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
         /// <param name="eventAggregator"><inheritdoc cref="ViewModelBase()"/></param>
         /// <param name="validators"><inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/></param>
-        public HomePageViewModel(IEventAggregator eventAggregator, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, validators)
+        public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
         {
+            // Initialize local fields and properties
             AppConfig config = AppConfigurationManager.GetSettings();
             mServerProcessName = config.ServerProcessName;
             ServerOutputText = "";
             ShutdownTime = null;
+            
+            // Add validator methods for properties
             AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
 
+            // Subscribe to events
             ServerStatusChanged += HomePageViewModel_OnServerStatusChange;
 
+            // Raise events
             StartServerCommand.RaiseCanExecuteChanged();
             ShutdownServerCommand.RaiseCanExecuteChanged();
             ScheduleShutdownCommand.RaiseCanExecuteChanged();
@@ -263,9 +276,11 @@ namespace TheForestDedicatedServerManager.ViewModels
         {
             EventAggregator.GetEvent<QuitEvent>().Publish();
         }
-        private bool QuitCanExecute()
+
+        private void EditSetupExecute()
         {
-            return true;
+            // open the setup window on top of the main window
+            Container.Resolve<SetupView>().ShowDialog();
         }
         #endregion
 
