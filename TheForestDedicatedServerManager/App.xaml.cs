@@ -42,6 +42,7 @@ namespace TheForestDedicatedServerManager
             containerRegistry.Register<MainWindow>(); // don't need this, but it's more explicit
             containerRegistry.Register<IEventAggregator, EventAggregator>();
             containerRegistry.Register<SetupViewModel>();
+            containerRegistry.Register<IContainerProvider, UnityContainerExtension>();
         }
 
         /// <summary>
