@@ -5,9 +5,9 @@ namespace TheForestDedicatedServerManager.Views
     /// <summary>
     /// Interaction logic for HomePageViewModel.xaml
     /// </summary>
-    public partial class HomePageViewModel : UserControl
+    public partial class HomePageView : UserControl
     {
-        public HomePageViewModel()
+        public HomePageView()
         {
             InitializeComponent();
         }
