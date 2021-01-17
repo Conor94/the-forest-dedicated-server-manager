@@ -24,6 +24,7 @@ namespace TheForestDedicatedServerManager.Base
         {
             get
             {
+                Error = "";
                 if (Validators.ContainsKey(propertyName))
                 {
                     Type t = GetType();
@@ -33,7 +34,7 @@ namespace TheForestDedicatedServerManager.Base
                 }
                 else
                 {
-                    throw new ArgumentException($"Property name could not be found in the {nameof(Validators)} dictionary.");
+                    return Error;
                 }
             }
         }
