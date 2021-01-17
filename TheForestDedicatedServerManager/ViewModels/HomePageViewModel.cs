@@ -299,10 +299,6 @@ namespace TheForestDedicatedServerManager.ViewModels
                     errorMessage = "Shutdown time cannot be in the past.";
                 }
             }
-            else
-            {
-                errorMessage = "Shutdown time cannot be empty.";
-            }
             return errorMessage;
         }
         #endregion
