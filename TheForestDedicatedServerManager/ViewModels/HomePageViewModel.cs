@@ -87,10 +87,10 @@ namespace TheForestDedicatedServerManager.ViewModels
         #endregion
 
         #region Events
-        public event EventHandler ServerStatusChange;
-        protected virtual void RaiseServerStatusChange()
+        public event EventHandler ServerStatusChanged;
+        protected virtual void RaiseServerStatusChanged()
         {
-            ServerStatusChange?.Invoke(this, EventArgs.Empty);
+            ServerStatusChanged?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -111,13 +111,13 @@ namespace TheForestDedicatedServerManager.ViewModels
             ShutdownTime = null;
             AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
 
-            ServerStatusChange += HomePageViewModel_OnServerStatusChange;
+            ServerStatusChanged += HomePageViewModel_OnServerStatusChange;
 
             StartServerCommand.RaiseCanExecuteChanged();
             ShutdownServerCommand.RaiseCanExecuteChanged();
             ScheduleShutdownCommand.RaiseCanExecuteChanged();
             CancelShutdownCommand.RaiseCanExecuteChanged();
-            RaiseServerStatusChange();
+            RaiseServerStatusChanged();
         }
         #endregion
 
@@ -143,7 +143,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                     StartServerCommand.RaiseCanExecuteChanged();
                     ScheduleShutdownCommand.RaiseCanExecuteChanged();
                     CancelShutdownCommand.RaiseCanExecuteChanged();
-                    RaiseServerStatusChange();
+                    RaiseServerStatusChanged();
                 }
                 else
                 {
@@ -177,7 +177,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                 if (processes[0].HasExited)
                 {
                     AppendServerOutputText("Dedicated server has been shutdown.");
-                    RaiseServerStatusChange();
+                    RaiseServerStatusChanged();
                 }
                 else
                 {
@@ -270,10 +270,10 @@ namespace TheForestDedicatedServerManager.ViewModels
         #endregion
 
         #region Validators
-        private string ValidateShutdownTime(object arg)
+        private string ValidateShutdownTime(object value)
         {
             string errorMessage = "";
-            if (arg is string shutdownTime && !string.IsNullOrWhiteSpace(shutdownTime))
+            if (value is string shutdownTime && !string.IsNullOrWhiteSpace(shutdownTime))
             {
                 if (!DateTime.TryParse(shutdownTime, out DateTime tmpShutdownTime))
                 {
@@ -311,31 +311,31 @@ namespace TheForestDedicatedServerManager.ViewModels
         private bool CheckServerStatus()
         {
             // Throw an exception if process name field is blank
-            if (string.IsNullOrWhiteSpace(mServerProcessName))
+            ////if (string.IsNullOrWhiteSpace(mServerProcessName))
+            ////{
+            ////    throw new Exception($"{nameof(mServerProcessName)} cannot be null, empty, or only whitespace.");
+            ////}
+            ////else
+            ////{
+            // Return true if process is found, and false if it wasn't
+            Process[] processes = Process.GetProcessesByName(mServerProcessName);
+            if (processes.Length == 1)
             {
-                throw new Exception($"{nameof(mServerProcessName)} cannot be null, empty, or only whitespace.");
+                return true;
+            }
+            else if (processes.Length < 1)
+            {
+                return false;
+            }
+            else if (processes.Length > 1)
+            {
+                throw new Exception($"Multiple processes with the name '{mServerProcessName}' were found.");
             }
             else
             {
-                // Return true if process is found, and false if it wasn't
-                Process[] processes = Process.GetProcessesByName(mServerProcessName);
-                if (processes.Length == 1)
-                {
-                    return true;
-                }
-                else if (processes.Length < 1)
-                {
-                    return false;
-                }
-                else if (processes.Length > 1)
-                {
-                    throw new Exception($"Multiple processes with the name '{mServerProcessName}' were found.");
-                }
-                else
-                {
-                    throw new Exception($"Error occurred while resolving process '{mServerProcessName}'.");
-                }
+                throw new Exception($"Error occurred while resolving process '{mServerProcessName}'.");
             }
+            ////}
         }
         private void AppendServerOutputText(string text)
         {

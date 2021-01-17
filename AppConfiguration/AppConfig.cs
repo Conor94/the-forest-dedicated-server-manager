@@ -17,19 +17,19 @@ namespace AppConfiguration
         public string TheForestServerManagerExecutablePath
         {
             get => (string)this["TheForestServerManagerExecutablePath"];
-            private set => this["TheForestServerManagerExecutablePath"] = value;
+            set => this["TheForestServerManagerExecutablePath"] = value;
         }
         [ConfigurationProperty("ServerProcessName")]
         public string ServerProcessName
         {
-            get => (string)this["ServerProcessName"];
+            get => Path.GetFileNameWithoutExtension(TheForestServerManagerExecutablePath);
             private set => this["ServerProcessName"] = value;
         }
         [ConfigurationProperty("ServerArguments")]
         public string ServerArguments
         {
             get => (string)this["ServerArguments"];
-            private set => this["ServerArguments"] = value;
+            set => this["ServerArguments"] = value;
         }
         /// <summary>
         /// Determines whether a machine shutdown is scheduled along with a scheduled dedicated server shutdown.
@@ -39,6 +39,12 @@ namespace AppConfiguration
         {
             get => (bool)this["IsMachineShutdownScheduled"];
             set => this["IsMachineShutdownScheduled"] = value;
+        }
+        [ConfigurationProperty("IsSetupSaved", DefaultValue = false)]
+        public bool IsSetupSaved
+        {
+            get => (bool)this["IsSetupSaved"];
+            set => this["IsSetupSaved"] = value;
         }
         [ConfigurationProperty("ShutdownTime")]
         public DateTime ShutdownTime
@@ -51,11 +57,7 @@ namespace AppConfiguration
         #region Constructors
         public AppConfig()
         {
-            //! hardcoded values for now
             ServiceName = "TheForestDedicatedServerManagerService";
-            TheForestServerManagerExecutablePath = @"C:\Program Files (x86)\Steam\steamapps\common\TheForestDedicatedServer\TheForestDedicatedServer.exe";
-            ServerProcessName = Path.GetFileNameWithoutExtension(TheForestServerManagerExecutablePath);
-            ServerArguments = "-batchmode -dedicated -nographics -nosteamclient";
         }
         #endregion
     }

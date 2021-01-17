@@ -8,5 +8,15 @@
     Startup="OnStartup">
     <Application.Resources>
         <sys:String x:Key="AppTitle">The Forest Dedicated Server Manager</sys:String>
+
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </prism:PrismApplication>

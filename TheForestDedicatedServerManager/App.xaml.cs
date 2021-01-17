@@ -2,8 +2,11 @@
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
+using System;
 using System.Windows;
+using TheForestDedicatedServerManager.ViewModels;
 using TheForestDedicatedServerManager.Views;
+using Unity;
 
 namespace TheForestDedicatedServerManager
 {
@@ -12,15 +15,33 @@ namespace TheForestDedicatedServerManager
     /// </summary>
     public partial class App : PrismApplication
     {
+        /// <inheritdoc/>
         protected override Window CreateShell()
         {
-            return Container.Resolve<MainWindow>();
+            // Open the setup window if there is no setup information saved
+            AppConfig config = AppConfigurationManager.GetSettings();
+            if (!config.IsSetupSaved)
+            {
+                Container.Resolve<SetupView>().ShowDialog();
+                // Shutdown the app if the setup window was cancelled
+                config = AppConfigurationManager.GetSettings();
+                if (!config.IsSetupSaved)
+                {
+                    Current.Shutdown();
+                }
+            }
+
+            Window w = Container.Resolve<MainWindow>();
+            w.Closed += MainWindow_OnClosed;
+            return w;
         }
 
+        /// <inheritdoc/>
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.Register<MainWindow>(); // don't need this, but it's more explicit
             containerRegistry.Register<IEventAggregator, EventAggregator>();
+            containerRegistry.Register<SetupViewModel>();
         }
 
         /// <summary>
@@ -38,27 +59,21 @@ namespace TheForestDedicatedServerManager
         /// </remarks>
         /// <param name="sender">Object that invoked the event.</param>
         /// <param name="e">Event data for the event.</param>
-        protected void OnStartup(object sender, StartupEventArgs e)
+        protected virtual void OnStartup(object sender, StartupEventArgs e)
         {
+            // Initialize the app
             AppConfigurationManager.Init(@".\AppConfiguration.exe");
+            Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+        }
 
-            ////StringBuilder sb = new StringBuilder();
-            ////sb.AppendLine($"Type = {sender.GetType()}");
-            ////sb.AppendLine($"e.Args = {e.Args}");
-
-            ////if (sender is App a)
-            ////{
-            ////    if (a == this)
-            ////    {
-            ////        sb.AppendLine("a == this");
-            ////    }
-            ////    else
-            ////    {
-            ////        sb.AppendLine("a != this");
-            ////    }
-            ////}
-
-            ////MessageBox.Show(sb.ToString());
+        /// <summary>
+        /// Shuts down the application when the main window is closed.
+        /// </summary>
+        /// <param name="sender">Object that invoked the event.</param>
+        /// <param name="e">Event data for the event.</param>
+        protected virtual void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            Current.Shutdown();
         }
     }
 }
