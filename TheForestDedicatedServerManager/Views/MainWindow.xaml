@@ -13,7 +13,7 @@
     ResizeMode="CanMinimize">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:HomePageViewModel}">
-            <views:HomePageViewModel />
+            <views:HomePageView />
         </DataTemplate>
     </Window.Resources>
 
