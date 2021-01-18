@@ -17,6 +17,10 @@
             <Setter Property="Width" Value="120" />
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding SaveSetupCommand}" />
+        <KeyBinding Key="Esc" Command="{Binding CancelSetupCommand}" />
+    </Window.InputBindings>
 
     <Grid>
         <Label
@@ -57,14 +61,14 @@
             Style="{StaticResource TextBoxStyle}"
             Text="{Binding ServerArguments, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
         <Button
-            Margin="148,101,0,0"
+            Margin="164,101,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding SaveSetupCommand}"
             Content="Save"
             Style="{StaticResource WindowButton}" />
         <Button
-            Margin="286,101,0,0"
+            Margin="302,101,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Command="{Binding CancelSetupCommand}"
