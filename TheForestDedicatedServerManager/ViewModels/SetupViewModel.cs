@@ -17,10 +17,11 @@ namespace TheForestDedicatedServerManager.ViewModels
     {
         #region Fields and properties
         private string mTheForestDeducatedServerExePath;
-        private DelegateCommand mSaveSetupCommand;
-        private DelegateCommand mBrowseCommand;
         private string mServerArguments;
+        // Commands
+        private DelegateCommand mSaveSetupCommand;
         private DelegateCommand mCancelSetupCommand;
+        private DelegateCommand mBrowseCommand;
 
         public string TheForestDedicatedServerExePath
         {
@@ -38,20 +39,21 @@ namespace TheForestDedicatedServerManager.ViewModels
             get => mServerArguments;
             set => SetProperty(ref mServerArguments, value);
         }
+        // Commands
         public DelegateCommand SaveSetupCommand
         {
             get => mSaveSetupCommand ?? (mSaveSetupCommand = new DelegateCommand(SaveSetupExecute, SaveSetupCanExecute));
             set => mSaveSetupCommand = value;
         }
-        public DelegateCommand BrowseCommand
-        {
-            get => mBrowseCommand ?? (mBrowseCommand = new DelegateCommand(BrowseExecute));
-            set => mBrowseCommand = value;
-        }
         public DelegateCommand CancelSetupCommand
         {
             get => mCancelSetupCommand ?? (mCancelSetupCommand = new DelegateCommand(CancelSetupExecute));
             set => mCancelSetupCommand = value;
+        }
+        public DelegateCommand BrowseCommand
+        {
+            get => mBrowseCommand ?? (mBrowseCommand = new DelegateCommand(BrowseExecute));
+            set => mBrowseCommand = value;
         }
         #endregion
 
@@ -113,6 +115,7 @@ namespace TheForestDedicatedServerManager.ViewModels
         {
             OpenFileDialog dialog = new OpenFileDialog()
             {
+                Title = "Find and select TheForestDedicatedServer.exe",
                 Filter = "Application|*.exe",
                 DefaultExt = "exe",
                 CheckPathExists = true
