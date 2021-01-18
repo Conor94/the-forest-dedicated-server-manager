@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
+using System.Windows;
 using System.Windows.Media;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
@@ -182,34 +183,37 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         private void ShutdownServerExecute()
         {
-            Process[] processes = Process.GetProcessesByName(mServerProcessName);
-            if (processes.Length == 1)
+            if (MessageBox.Show("Are you sure you want to shutdown the server?", "Shutdown Server", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                processes[0].Kill();
-                Thread.Sleep(100);
-                if (processes[0].HasExited)
+                Process[] processes = Process.GetProcessesByName(mServerProcessName);
+                if (processes.Length == 1)
                 {
-                    AppendServerOutputText("Dedicated server has been shutdown.");
-                    RaiseServerStatusChanged();
+                    processes[0].Kill();
+                    Thread.Sleep(100);
+                    if (processes[0].HasExited)
+                    {
+                        AppendServerOutputText("Dedicated server has been shutdown.");
+                        RaiseServerStatusChanged();
+                    }
+                    else
+                    {
+                        AppendServerOutputText("Dedicated server failed to shutdown.");
+                    }
                 }
-                else
+                else if (processes.Length == 0)
                 {
-                    AppendServerOutputText("Dedicated server failed to shutdown.");
+                    AppendServerOutputText("Dedicated server is not running.");
                 }
-            }
-            else if (processes.Length == 0)
-            {
-                AppendServerOutputText("Dedicated server is not running.");
-            }
-            else if (processes.Length > 1)
-            {
-                throw new Exception("Multiple processes with the same name found.");
-            }
+                else if (processes.Length > 1)
+                {
+                    throw new Exception("Multiple processes with the same name found.");
+                }
 
-            ShutdownServerCommand.RaiseCanExecuteChanged();
-            StartServerCommand.RaiseCanExecuteChanged();
-            ScheduleShutdownCommand.RaiseCanExecuteChanged();
-            CancelShutdownCommand.RaiseCanExecuteChanged();
+                ShutdownServerCommand.RaiseCanExecuteChanged();
+                StartServerCommand.RaiseCanExecuteChanged();
+                ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+            }
         }
         private bool ShutdownServerCanExecute()
         {
