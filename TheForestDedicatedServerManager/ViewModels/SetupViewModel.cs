@@ -3,7 +3,6 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
@@ -59,11 +58,7 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         #region Constructors
         [InjectionConstructor]
-        public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container) : this(eventAggregator, container, null)
-        {
-        }
-
-        public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
+        public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
         {
             AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
 

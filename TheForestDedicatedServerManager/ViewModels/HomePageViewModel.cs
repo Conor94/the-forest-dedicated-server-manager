@@ -105,14 +105,7 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         #region Constructors
         /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
-        public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container) : this(eventAggregator, container, null)
-        {
-        }
-
-        /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
-        /// <param name="eventAggregator"><inheritdoc cref="ViewModelBase()"/></param>
-        /// <param name="validators"><inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/></param>
-        public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
+        public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
         {
             // Initialize local fields and properties
             AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
