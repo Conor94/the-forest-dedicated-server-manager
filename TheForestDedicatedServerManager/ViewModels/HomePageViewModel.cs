@@ -56,9 +56,9 @@ namespace TheForestDedicatedServerManager.ViewModels
             set
             {
                 SetProperty(ref mIsMachineShutdown, value);
-                AppConfig config = AppConfigurationManager.GetSettings();
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
                 config.IsMachineShutdownScheduled = value;
-                AppConfigurationManager.Save();
+                AppConfigManager<AppConfigSection>.Save();
             }
         }
         public Brush ServerStatusColour
@@ -115,7 +115,7 @@ namespace TheForestDedicatedServerManager.ViewModels
         public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
         {
             // Initialize local fields and properties
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             mServerProcessName = config.ServerProcessName;
             ServerOutputText = "";
             ShutdownTime = null;
@@ -138,10 +138,10 @@ namespace TheForestDedicatedServerManager.ViewModels
         #region Command methods
         private void StartServerExecute()
         {
-            AppConfig appConfig = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             Process process = new Process()
             {
-                StartInfo = new ProcessStartInfo(appConfig.TheForestServerManagerExecutablePath, appConfig.ServerArguments)
+                StartInfo = new ProcessStartInfo(config.TheForestServerManagerExecutablePath, config.ServerArguments)
                 {
                     Verb = "runas"
                 }
@@ -189,7 +189,7 @@ namespace TheForestDedicatedServerManager.ViewModels
                 if (processes.Length == 1)
                 {
                     processes[0].Kill();
-                    Thread.Sleep(100);
+                    Thread.Sleep(200);
                     if (processes[0].HasExited)
                     {
                         AppendServerOutputText("Dedicated server has been shutdown.");
@@ -222,13 +222,13 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         private void ScheduleShutdownExecute()
         {
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             ServiceController controller = new ServiceController(config.ServiceName);
             if (controller.Status != ServiceControllerStatus.Running)
             {
                 // Save the shutdown time to the shared file
                 config.ShutdownTime = DateTime.Parse(ShutdownTime);
-                AppConfigurationManager.Save();
+                AppConfigManager<AppConfigSection>.Save();
 
                 // Start the service
                 controller.Start();
@@ -251,12 +251,14 @@ namespace TheForestDedicatedServerManager.ViewModels
         }
         private bool ScheduleShutdownCanExecute()
         {
-            return CheckServerStatus() && ValidateShutdownTime(ShutdownTime) == "";
+            return CheckServerStatus()
+                && ValidateShutdownTime(ShutdownTime) == ""
+                && !string.IsNullOrWhiteSpace(ShutdownTime);
         }
 
         private void CancelShutdownExecute()
         {
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             ServiceController controller = new ServiceController(config.ServiceName);
             if (controller.Status == ServiceControllerStatus.Running)
             {
@@ -271,7 +273,7 @@ namespace TheForestDedicatedServerManager.ViewModels
         }
         private bool CancelShutdownCanExecute()
         {
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             ServiceController controller = new ServiceController(config.ServiceName);
             return controller.Status == ServiceControllerStatus.Running;
         }

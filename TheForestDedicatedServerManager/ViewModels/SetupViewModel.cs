@@ -65,7 +65,7 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(eventAggregator, container, validators)
         {
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
 
             // Initialize properties
             Title = "Setup";
@@ -85,11 +85,11 @@ namespace TheForestDedicatedServerManager.ViewModels
         {
             try
             {
-                AppConfig config = AppConfigurationManager.GetSettings();
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
                 config.TheForestServerManagerExecutablePath = TheForestDedicatedServerExePath;
                 config.ServerArguments = ServerArguments;
                 config.IsSetupSaved = true;
-                if (AppConfigurationManager.Save())
+                if (AppConfigManager<AppConfigSection>.Save())
                 {
                     CloseWindow();
                 }

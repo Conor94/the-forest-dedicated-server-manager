@@ -4,10 +4,13 @@ using System.IO;
 
 namespace AppConfiguration
 {
-    public class AppConfig : ConfigurationElement
+    /// <summary>
+    /// Class that implements <see cref="ConfigurationSection"/>.
+    /// </summary>
+    public class AppConfigSection : ConfigurationSection
     {
         #region Fields and properties
-        [ConfigurationProperty("ServiceName")]
+        [ConfigurationProperty("ServiceName", DefaultValue = "TheForestDedicatedServerManagerService")]
         public string ServiceName
         {
             get => (string)this["ServiceName"];
@@ -51,13 +54,6 @@ namespace AppConfiguration
         {
             get => (DateTime)this["ShutdownTime"];
             set => this["ShutdownTime"] = value;
-        }
-        #endregion
-
-        #region Constructors
-        public AppConfig()
-        {
-            ServiceName = "TheForestDedicatedServerManagerService";
         }
         #endregion
     }

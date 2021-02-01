@@ -19,12 +19,12 @@ namespace TheForestDedicatedServerManager
         protected override Window CreateShell()
         {
             // Open the setup window if there is no setup information saved
-            AppConfig config = AppConfigurationManager.GetSettings();
+            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
             if (!config.IsSetupSaved)
             {
                 Container.Resolve<SetupView>().ShowDialog();
                 // Shutdown the app if the setup window was cancelled
-                config = AppConfigurationManager.GetSettings();
+                config = AppConfigManager<AppConfigSection>.GetSection();
                 if (!config.IsSetupSaved)
                 {
                     Current.Shutdown();
@@ -66,7 +66,7 @@ namespace TheForestDedicatedServerManager
         protected virtual void OnStartup(object sender, StartupEventArgs e)
         {
             // Initialize the app
-            AppConfigurationManager.Init(@".\AppConfiguration.exe");
+            AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.LocalApplicationData);
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         }
 

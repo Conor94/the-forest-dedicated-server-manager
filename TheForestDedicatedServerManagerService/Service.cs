@@ -44,8 +44,8 @@ namespace TheForestDedicatedServerManagerService
                 // Change the current working directory to the applications base directory. This must be done
                 // because the default working directory for services is %SYSTEMROOT%\System32.
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
-                AppConfigurationManager.Init(@".\AppConfiguration.exe");
-                AppConfig config = AppConfigurationManager.GetSettings();
+                AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.LocalApplicationData);
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
 
                 // schedule a timer for the shutdown time
                 DateTime currentTime = DateTime.Now;
@@ -80,10 +80,10 @@ namespace TheForestDedicatedServerManagerService
         {
             try
             {
-                AppConfig config = AppConfigurationManager.GetSettings();
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
                 config.IsMachineShutdownScheduled = false;
                 config.ShutdownTime = DateTime.MinValue;
-                AppConfigurationManager.Save();
+                AppConfigManager<AppConfigSection>.Save();
             }
             catch (Exception e)
             {
@@ -129,7 +129,7 @@ namespace TheForestDedicatedServerManagerService
             try
             {
                 // Shutdown server
-                AppConfig config = AppConfigurationManager.GetSettings();
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
                 Process[] processes = Process.GetProcessesByName(config.ServerProcessName);
                 if (processes.Length == 1)
                 {
