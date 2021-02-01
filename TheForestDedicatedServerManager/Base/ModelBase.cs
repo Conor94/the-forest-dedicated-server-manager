@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace TheForestDedicatedServerManager.Base
+﻿namespace TheForestDedicatedServerManager.Base
 {
     public abstract class ModelBase : DataErrorBindableBase
     {

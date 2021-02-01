@@ -1,7 +1,5 @@
 ﻿using Prism.Events;
 using Prism.Ioc;
-using System;
-using System.Collections.Generic;
 using TheForestDedicatedServerManager.Events;
 
 namespace TheForestDedicatedServerManager.Base
@@ -34,7 +32,6 @@ namespace TheForestDedicatedServerManager.Base
         #endregion
 
         #region Constructor
-        /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
         public ViewModelBase(IEventAggregator eventAggregator, IContainerProvider container)
         {
             Container = container;

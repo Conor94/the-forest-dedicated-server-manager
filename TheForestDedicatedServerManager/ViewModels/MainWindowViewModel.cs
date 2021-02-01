@@ -1,8 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
