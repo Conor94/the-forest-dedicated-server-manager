@@ -1,11 +1,11 @@
-﻿using AppConfiguration;
-using Prism.Events;
+﻿using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
 using System.Windows;
 using TheForestDedicatedServerManager.ViewModels;
 using TheForestDedicatedServerManager.Views;
+using TheForestDedicatedServerManagerConfig;
 using Unity;
 
 namespace TheForestDedicatedServerManager

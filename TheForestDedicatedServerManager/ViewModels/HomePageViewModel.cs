@@ -1,5 +1,4 @@
-﻿using AppConfiguration;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using System;
@@ -13,6 +12,7 @@ using System.Windows.Media;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
 using TheForestDedicatedServerManager.Views;
+using TheForestDedicatedServerManagerConfig;
 
 namespace TheForestDedicatedServerManager.ViewModels
 {

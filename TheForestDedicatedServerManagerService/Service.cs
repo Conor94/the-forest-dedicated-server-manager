@@ -1,5 +1,4 @@
-﻿using AppConfiguration;
-using DotNetExtensions;
+﻿using DotNetExtensions;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -7,6 +6,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Timers;
+using TheForestDedicatedServerManagerConfig;
 
 namespace TheForestDedicatedServerManagerService
 {

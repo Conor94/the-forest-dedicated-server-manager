@@ -3,7 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 
-namespace AppConfiguration
+namespace TheForestDedicatedServerManagerConfig
 {
     /// <summary>
     /// Manages a custom <see cref="ConfigurationSection"/>. Inherit from <see cref="ConfigurationSection"/>

@@ -1,5 +1,4 @@
-﻿using AppConfiguration;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -9,6 +8,7 @@ using System.IO;
 using System.Windows;
 using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
+using TheForestDedicatedServerManagerConfig;
 using Unity;
 
 namespace TheForestDedicatedServerManager.ViewModels

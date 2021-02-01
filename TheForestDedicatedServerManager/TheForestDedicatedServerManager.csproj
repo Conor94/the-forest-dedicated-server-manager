@@ -170,9 +170,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppConfiguration\AppConfiguration.csproj">
+    <ProjectReference Include="..\TheForestDedicatedServerManagerConfig\TheForestDedicatedServerManagerConfig.csproj">
       <Project>{9c218375-a37a-4fed-95a0-f2cff4621bc8}</Project>
-      <Name>AppConfiguration</Name>
+      <Name>TheForestDedicatedServerManagerConfig</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheForestDedicatedServerManagerService\TheForestDedicatedServerManagerService.csproj">
       <Project>{9bbe2dee-a526-4a14-a77c-61b5b95b4282}</Project>

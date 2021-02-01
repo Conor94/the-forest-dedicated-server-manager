@@ -74,13 +74,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppConfiguration\AppConfiguration.csproj">
-      <Project>{9c218375-a37a-4fed-95a0-f2cff4621bc8}</Project>
-      <Name>AppConfiguration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DotNetExtensions\DotNetExtensions.csproj">
       <Project>{983598da-d433-4518-94b0-6829e6f8b99c}</Project>
       <Name>DotNetExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheForestDedicatedServerManagerConfig\TheForestDedicatedServerManagerConfig.csproj">
+      <Project>{9c218375-a37a-4fed-95a0-f2cff4621bc8}</Project>
+      <Name>TheForestDedicatedServerManagerConfig</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

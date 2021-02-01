@@ -2,7 +2,7 @@
 using System.Configuration;
 using System.IO;
 
-namespace AppConfiguration
+namespace TheForestDedicatedServerManagerConfig
 {
     /// <summary>
     /// Class that implements <see cref="ConfigurationSection"/>.
