@@ -49,15 +49,9 @@ namespace TheForestDedicatedServerManager.Base
         /// <summary>
         /// Constructor for the <see cref="DataErrorBindableBase"/> class.
         /// </summary>
-        public DataErrorBindableBase() : this(null) { }
-
-        /// <summary>
-        /// Constructor for the <see cref="DataErrorBindableBase"/> class.
-        /// </summary>
-        /// <param name="_validators">Holds methods for validating properties (using the <see cref="IDataErrorInfo/>"/> interface).</param>
-        public DataErrorBindableBase(Dictionary<string, Func<object, string>> _validators)
+        public DataErrorBindableBase()
         {
-            Validators = _validators;
+            Validators = null;
         }
         #endregion
 

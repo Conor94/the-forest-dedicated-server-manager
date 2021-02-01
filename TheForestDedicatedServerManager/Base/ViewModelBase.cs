@@ -33,14 +33,9 @@ namespace TheForestDedicatedServerManager.Base
         }
         #endregion
 
-        #region Constructors
+        #region Constructor
         /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
-        public ViewModelBase(IEventAggregator eventAggregator, IContainerProvider container) : this(eventAggregator, container, null)
-        {
-        }
-
-        /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
-        public ViewModelBase(IEventAggregator eventAggregator, IContainerProvider container, Dictionary<string, Func<object, string>> validators) : base(validators)
+        public ViewModelBase(IEventAggregator eventAggregator, IContainerProvider container)
         {
             Container = container;
             EventAggregator = eventAggregator;
