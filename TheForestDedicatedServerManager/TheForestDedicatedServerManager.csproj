@@ -75,6 +75,9 @@
     <Reference Include="Prism.Wpf, Version=8.0.0.1909, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.8.0.0.1909\lib\net47\Prism.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="PrismBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PrismBase.1.0.0\lib\net472\PrismBase.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -126,9 +129,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Base\DataErrorBindableBase.cs" />
-    <Compile Include="Base\ModelBase.cs" />
-    <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Events\QuitEvent.cs" />
     <Compile Include="Events\ViewChangeRequestEvent.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />

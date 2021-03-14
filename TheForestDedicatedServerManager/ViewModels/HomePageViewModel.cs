@@ -2,15 +2,14 @@
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
+using PrismBase.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
-using TheForestDedicatedServerManager.Base;
 using TheForestDedicatedServerManager.Events;
 using TheForestDedicatedServerManager.Views;
 using TheForestDedicatedServerManagerConfig;
