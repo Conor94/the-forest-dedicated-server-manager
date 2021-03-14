@@ -3,6 +3,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
+using System.Reflection;
 using System.Windows;
 using TheForestDedicatedServerManager.ViewModels;
 using TheForestDedicatedServerManager.Views;
@@ -67,7 +68,7 @@ namespace TheForestDedicatedServerManager
         protected virtual void OnStartup(object sender, StartupEventArgs e)
         {
             // Initialize the app
-            AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.LocalApplicationData);
+            AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.CommonApplicationData, Assembly.GetExecutingAssembly().GetName().Name);
             Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
         }
 

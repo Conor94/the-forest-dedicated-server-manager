@@ -45,7 +45,7 @@ namespace TheForestDedicatedServerManagerService
                 // Change the current working directory to the applications base directory. This must be done
                 // because the default working directory for services is %SYSTEMROOT%\System32.
                 Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
-                AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.LocalApplicationData);
+                AppConfigManager<AppConfigSection>.Init(Environment.SpecialFolder.CommonApplicationData, "TheForestDedicatedServerManager");
                 AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
 
                 // schedule a timer for the shutdown time

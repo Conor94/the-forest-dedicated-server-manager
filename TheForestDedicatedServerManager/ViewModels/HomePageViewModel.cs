@@ -320,13 +320,6 @@ namespace TheForestDedicatedServerManager.ViewModels
         #region Helper methods
         private bool CheckServerStatus()
         {
-            // Throw an exception if process name field is blank
-            ////if (string.IsNullOrWhiteSpace(mServerProcessName))
-            ////{
-            ////    throw new Exception($"{nameof(mServerProcessName)} cannot be null, empty, or only whitespace.");
-            ////}
-            ////else
-            ////{
             // Return true if process is found, and false if it wasn't
             Process[] processes = Process.GetProcessesByName(mServerProcessName);
             if (processes.Length == 1)
@@ -345,7 +338,6 @@ namespace TheForestDedicatedServerManager.ViewModels
             {
                 throw new Exception($"Error occurred while resolving process '{mServerProcessName}'.");
             }
-            ////}
         }
         private void AppendServerOutputText(string text)
         {
