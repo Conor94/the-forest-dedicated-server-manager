@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using AppConfigurationManager;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -84,10 +85,8 @@ namespace TheForestDedicatedServerManager.ViewModels
                 config.TheForestServerManagerExecutablePath = TheForestDedicatedServerExePath;
                 config.ServerArguments = ServerArguments;
                 config.IsSetupSaved = true;
-                if (AppConfigManager<AppConfigSection>.Save())
-                {
-                    CloseWindow();
-                }
+                AppConfigManager<AppConfigSection>.Save();
+                CloseWindow();
             }
             catch (Exception e)
             {

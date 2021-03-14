@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using AppConfigurationManager;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using System;
