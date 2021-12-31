@@ -3,7 +3,7 @@ using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
-using PrismBase.Mvvm;
+using PrismMvvmBase.Bindable;
 using System;
 using System.IO;
 using System.Windows;
@@ -69,7 +69,7 @@ namespace TheForestDedicatedServerManager.ViewModels
             ServerArguments = config.ServerArguments;
 
             // Add validator methods for properties
-            AddValidator(nameof(TheForestDedicatedServerExePath), ValidateTheForestDedicatedServerExePath);
+            AddValidator(nameof(TheForestDedicatedServerExePath), new DataErrorValidator<string>(ValidateTheForestDedicatedServerExePath));
 
             // Raise events
             SaveSetupCommand.RaiseCanExecuteChanged();
@@ -97,7 +97,7 @@ namespace TheForestDedicatedServerManager.ViewModels
         }
         private bool SaveSetupCanExecute()
         {
-            return TheForestDedicatedServerExePath != "" && ValidateTheForestDedicatedServerExePath(TheForestDedicatedServerExePath) == "";
+            return TheForestDedicatedServerExePath != "" && ValidateTheForestDedicatedServerExePath(TheForestDedicatedServerExePath, out string _);
         }
 
         private void CancelSetupExecute()
@@ -122,22 +122,17 @@ namespace TheForestDedicatedServerManager.ViewModels
         #endregion
 
         #region Validator methods
-        private string ValidateTheForestDedicatedServerExePath(object value)
+        private bool ValidateTheForestDedicatedServerExePath(string exePath, out string errorMessage)
         {
-            string errorMessage = "";
-            if (value is string exePath)
-            {
-                if (!File.Exists(exePath) && exePath != "")
-                {
-                    errorMessage = "Server executable path is not valid.";
-                }
+            errorMessage = "";
 
-                return errorMessage;
-            }
-            else
+            if (!File.Exists(exePath) && exePath != "")
             {
-                throw new Exception($"Argument must be of type '{typeof(string)}'.");
+                errorMessage = "Server executable path is not valid.";
+                return false;
             }
+
+            return true;
         }
         #endregion
 

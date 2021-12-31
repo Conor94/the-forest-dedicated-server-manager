@@ -1,5 +1,5 @@
 ﻿using Prism.Events;
-using PrismBase.Mvvm;
+using PrismMvvmBase.Bindable;
 
 namespace TheForestDedicatedServerManager.Events
 {

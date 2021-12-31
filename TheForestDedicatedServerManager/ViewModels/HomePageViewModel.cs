@@ -2,7 +2,7 @@
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
-using PrismBase.Mvvm;
+using PrismMvvmBase.Bindable;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -114,7 +114,7 @@ namespace TheForestDedicatedServerManager.ViewModels
             ShutdownTime = null;
 
             // Add validator methods for properties
-            AddValidator(nameof(ShutdownTime), ValidateShutdownTime);
+            AddValidator(nameof(ShutdownTime), new DataErrorValidator<string>(ValidateShutdownTime));
 
             // Subscribe to events
             ServerStatusChanged += HomePageViewModel_OnServerStatusChange;
@@ -215,37 +215,47 @@ namespace TheForestDedicatedServerManager.ViewModels
 
         private void ScheduleShutdownExecute()
         {
-            AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
-            ServiceController controller = new ServiceController(config.ServiceName);
-            if (controller.Status != ServiceControllerStatus.Running)
+            try
             {
-                // Save the shutdown time to the shared file
-                config.ShutdownTime = DateTime.Parse(ShutdownTime);
-                AppConfigManager<AppConfigSection>.Save();
-
-                // Start the service
-                controller.Start();
-                Thread.Sleep(100);
-                CancelShutdownCommand.RaiseCanExecuteChanged();
-                if (config.IsMachineShutdownScheduled)
+                AppConfigSection config = AppConfigManager<AppConfigSection>.GetSection();
+                ServiceController controller = new ServiceController(config.ServiceName);
+                if (controller.Status != ServiceControllerStatus.Running)
                 {
-                    AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}. A machine shutdown is also scheduled.");
+                    // Save the shutdown time to the shared file
+                    config.ShutdownTime = DateTime.Parse(ShutdownTime);
+                    AppConfigManager<AppConfigSection>.Save();
+
+                    // Start the service
+                    controller.Start();
+                    Thread.Sleep(100);
+                    CancelShutdownCommand.RaiseCanExecuteChanged();
+                    if (config.IsMachineShutdownScheduled)
+                    {
+                        AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}. A machine shutdown is also scheduled.");
+                    }
+                    else
+                    {
+                        AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}.");
+                    }
                 }
                 else
                 {
-                    AppendServerOutputText($"Shutdown scheduled for {config.ShutdownTime}.");
+                    string errorMsg = "Application attemped to schedule a shutdown when the shutdown scheduler service was already started.";
+                    AppendServerOutputText(errorMsg);
                 }
             }
-            else
+            catch (Exception e)
             {
-                string errorMsg = "Application attemped to schedule a shutdown when the shutdown scheduler service was already started.";
-                AppendServerOutputText(errorMsg);
+                if (e.InnerException.Message == "The system cannot find the file specified")
+                {
+                    AppendServerOutputText("Failed to schedule shutdown because the required service was not installed.");
+                }
             }
         }
         private bool ScheduleShutdownCanExecute()
         {
             return CheckServerStatus()
-                && ValidateShutdownTime(ShutdownTime) == ""
+                && ValidateShutdownTime(ShutdownTime, out string _)
                 && !string.IsNullOrWhiteSpace(ShutdownTime);
         }
 
@@ -284,10 +294,12 @@ namespace TheForestDedicatedServerManager.ViewModels
         #endregion
 
         #region Validators
-        private string ValidateShutdownTime(object value)
+        private bool ValidateShutdownTime(string shutdownTime, out string errorMessage)
         {
-            string errorMessage = "";
-            if (value is string shutdownTime && !string.IsNullOrWhiteSpace(shutdownTime))
+            bool isValid = false;
+
+            errorMessage = "";
+            if (!string.IsNullOrWhiteSpace(shutdownTime))
             {
                 if (!DateTime.TryParse(shutdownTime, out DateTime tmpShutdownTime))
                 {
@@ -297,8 +309,13 @@ namespace TheForestDedicatedServerManager.ViewModels
                 {
                     errorMessage = "Shutdown time cannot be in the past.";
                 }
-            }
-            return errorMessage;
+                else
+                {
+                    isValid = true;
+                }
+            };
+
+            return isValid;
         }
         #endregion
 
