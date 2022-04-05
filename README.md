@@ -14,4 +14,4 @@ The Forest Dedicated Server: https://theforest.gamepedia.com/Dedicated_Servers
 ## NuGet Packages
 This program uses code that I have published as NuGet packages on a local server. The code is published to GitHub here:
 * https://github.com/Conor94/nuget-packages/tree/master/AppConfigurationManager
-* https://github.com/Conor94/nuget-packages/tree/master/PrismBase
+* https://github.com/Conor94/nuget-packages/tree/master/PrismMvvmBase
