@@ -1,0 +1,22 @@
+﻿<prism:PrismApplication
+    x:Class="TheForestDSM.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:TheForestDSM"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    Startup="OnStartup">
+    <Application.Resources>
+        <sys:String x:Key="AppTitle">The Forest Dedicated Server Manager</sys:String>
+
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding (Validation.Errors)/ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Application.Resources>
+</prism:PrismApplication>
