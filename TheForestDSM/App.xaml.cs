@@ -46,12 +46,12 @@ namespace TheForestDSM
         {
             // Register transients
             containerRegistry.Register<IContainerProvider, UnityContainerExtension>();
-            containerRegistry.Register<IEventAggregator, EventAggregator>();
             containerRegistry.Register<SetupViewModel>();
 
             SQLiteDAO dao = SetupDatabase();
 
             // Register singletons
+            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
             containerRegistry.RegisterSingleton<MainWindow>(); // don't need this, but it's more explicit
             containerRegistry.RegisterSingleton<ConfigurationRepository>(() => new ConfigurationRepository(dao));
             containerRegistry.RegisterSingleton<ShutdownServiceDataRepository>(() => new ShutdownServiceDataRepository(dao));

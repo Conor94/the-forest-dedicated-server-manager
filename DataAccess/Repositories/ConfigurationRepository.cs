@@ -32,6 +32,7 @@ namespace DataAccess.Repositories
                 new SQLiteParameter($"@{ConfigurationSchema.SERVER_EXECUTABLE_PATH}", config.ServerExecutablePath),
                 new SQLiteParameter($"@{ConfigurationSchema.SERVER_PROCESS_NAME}", Path.GetFileNameWithoutExtension(config.ServerExecutablePath)),
                 new SQLiteParameter($"@{ConfigurationSchema.SERVER_ARGUMENTS}", config.ServerArguments),
+                new SQLiteParameter($"@{ConfigurationSchema.REFRESH_INTERVAL_IN_SECONDS}", config.RefreshIntervalInSeconds),
                 new SQLiteParameter($"@{ConfigurationSchema.IS_SETUP}", config.IsSetup ? 1 : 0),
             };
 
@@ -49,6 +50,7 @@ namespace DataAccess.Repositories
                 ServerExecutablePath = (string)dataReader[ConfigurationSchema.SERVER_EXECUTABLE_PATH],
                 ServerProcessName = (string)dataReader[ConfigurationSchema.SERVER_PROCESS_NAME],
                 ServerArguments = (string)dataReader[ConfigurationSchema.SERVER_ARGUMENTS],
+                RefreshIntervalInSeconds = Convert.ToInt32(dataReader[ConfigurationSchema.REFRESH_INTERVAL_IN_SECONDS]),
                 IsSetup = Convert.ToInt32(dataReader[ConfigurationSchema.IS_SETUP]) == 1 // Convert to bool
             };
         }

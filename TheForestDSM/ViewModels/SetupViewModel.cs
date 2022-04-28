@@ -10,6 +10,7 @@ using PrismMvvmBase.Bindable;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
 using Unity;
 
@@ -18,19 +19,18 @@ namespace TheForestDSM.ViewModels
     public class SetupViewModel : ViewModelBase
     {
         private readonly ConfigurationRepository mAppConfigRepo;
+        private Configuration mAppConfig;
 
-        // Commands
         private DelegateCommand mSaveSetupCommand;
         private DelegateCommand mCancelSetupCommand;
         private DelegateCommand mBrowseCommand;
-        private Configuration mAppConfig;
+        private DelegateCommand mRefreshIntervalInfoCommand;
 
         public Configuration Config
         {
             get => mAppConfig;
             set => SetProperty(ref mAppConfig, value);
         }
-        // Commands
         public DelegateCommand SaveSetupCommand
         {
             get => mSaveSetupCommand ?? (mSaveSetupCommand = new DelegateCommand(SaveSetupExecute, SaveSetupCanExecute));
@@ -45,6 +45,11 @@ namespace TheForestDSM.ViewModels
         {
             get => mBrowseCommand ?? (mBrowseCommand = new DelegateCommand(BrowseExecute));
             set => mBrowseCommand = value;
+        }
+        public DelegateCommand RefreshIntervalInfoCommand
+        {
+            get => mRefreshIntervalInfoCommand ?? (mRefreshIntervalInfoCommand = new DelegateCommand(RefreshIntervalInfoExecute));
+            set => mRefreshIntervalInfoCommand = value;
         }
 
         [InjectionConstructor]
@@ -75,6 +80,8 @@ namespace TheForestDSM.ViewModels
                 // Save to the database
                 Config.IsSetup = true;
                 mAppConfigRepo.Update(Config);
+
+                EventAggregator.GetEvent<ConfigurationSavedEvent>().Publish(Config);
 
                 CloseWindow();
             }
@@ -108,6 +115,12 @@ namespace TheForestDSM.ViewModels
             {
                 Config.ServerExecutablePath = dialog.FileName;
             }
+        }
+
+        private void RefreshIntervalInfoExecute()
+        {
+            new InfoDialog(AppStrings.RefreshIntervalDialog_Title, AppStrings.RefreshIntervalDialog_Content)
+                .ShowDialog();
         }
 
         private void CloseWindow()
