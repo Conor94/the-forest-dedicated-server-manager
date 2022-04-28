@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30330.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDedicatedServerManager", "TheForestDedicatedServerManager\TheForestDedicatedServerManager.csproj", "{C73FDBE2-8E28-4F89-A391-7482178F0A9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions.csproj", "{983598DA-D433-4518-94B0-6829E6F8B99C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDedicatedServerManagerService", "TheForestDedicatedServerManagerService\TheForestDedicatedServerManagerService.csproj", "{9BBE2DEE-A526-4A14-A77C-61B5B95B4282}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{EB3E8BED-C166-4A55-B0A5-6F1A21EE5AA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetExtensions", "DotNetExtensions\DotNetExtensions.csproj", "{983598DA-D433-4518-94B0-6829E6F8B99C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{77156146-B1A0-4C7D-8870-8AE5C3E97441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDedicatedServerManagerConfig", "TheForestDedicatedServerManagerConfig\TheForestDedicatedServerManagerConfig.csproj", "{9C218375-A37A-4FED-95A0-F2CFF4621BC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDSM", "TheForestDSM\TheForestDSM.csproj", "{C73FDBE2-8E28-4F89-A391-7482178F0A9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDSM.ShutdownService", "TheForestDSM.ShutdownService\TheForestDSM.ShutdownService.csproj", "{9BBE2DEE-A526-4A14-A77C-61B5B95B4282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{983598DA-D433-4518-94B0-6829E6F8B99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{983598DA-D433-4518-94B0-6829E6F8B99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{983598DA-D433-4518-94B0-6829E6F8B99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{983598DA-D433-4518-94B0-6829E6F8B99C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3E8BED-C166-4A55-B0A5-6F1A21EE5AA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3E8BED-C166-4A55-B0A5-6F1A21EE5AA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3E8BED-C166-4A55-B0A5-6F1A21EE5AA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3E8BED-C166-4A55-B0A5-6F1A21EE5AA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77156146-B1A0-4C7D-8870-8AE5C3E97441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77156146-B1A0-4C7D-8870-8AE5C3E97441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77156146-B1A0-4C7D-8870-8AE5C3E97441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77156146-B1A0-4C7D-8870-8AE5C3E97441}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C73FDBE2-8E28-4F89-A391-7482178F0A9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C73FDBE2-8E28-4F89-A391-7482178F0A9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C73FDBE2-8E28-4F89-A391-7482178F0A9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -25,14 +39,6 @@ Global
 		{9BBE2DEE-A526-4A14-A77C-61B5B95B4282}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BBE2DEE-A526-4A14-A77C-61B5B95B4282}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BBE2DEE-A526-4A14-A77C-61B5B95B4282}.Release|Any CPU.Build.0 = Release|Any CPU
-		{983598DA-D433-4518-94B0-6829E6F8B99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{983598DA-D433-4518-94B0-6829E6F8B99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{983598DA-D433-4518-94B0-6829E6F8B99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{983598DA-D433-4518-94B0-6829E6F8B99C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C218375-A37A-4FED-95A0-F2CFF4621BC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C218375-A37A-4FED-95A0-F2CFF4621BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C218375-A37A-4FED-95A0-F2CFF4621BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C218375-A37A-4FED-95A0-F2CFF4621BC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
