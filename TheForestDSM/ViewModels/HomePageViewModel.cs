@@ -11,8 +11,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using TheForestDSM.Events;
 using TheForestDSM.Views;
 
@@ -23,11 +25,12 @@ namespace TheForestDSM.ViewModels
         private readonly ConfigurationRepository mConfigRepo;
         private readonly ShutdownServiceDataRepository mShutdownServiceDataRepo;
 
-        public Configuration Config { get; }
+        public Configuration Config { get; private set; }
         public ShutdownServiceData ShutdownServiceData { get; }
+        public bool UpdateUiThreadIsRunning { get; private set; }
 
         // Private only fields
-        private readonly string mServiceName = AppStrings.ResourceManager.GetString("ServiceName");
+        private readonly string mServiceName = AppStrings.ServiceName;
 
         // Fields with public properties
         private string mServerOutputText;
@@ -78,14 +81,17 @@ namespace TheForestDSM.ViewModels
             get => mEditSetupCommand ?? (mEditSetupCommand = new DelegateCommand(EditSetupExecute));
             set => mEditSetupCommand = value;
         }
+        public CancellationTokenSource RefreshUIThreadCancellationTokenSource { get; private set; }
 
         public event EventHandler ServerStatusChanged;
         protected virtual void RaiseServerStatusChanged()
         {
-            ServerStatusChanged?.Invoke(this, EventArgs.Empty);
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                ServerStatusChanged?.Invoke(this, EventArgs.Empty);
+            });
         }
 
-        /// <inheritdoc cref="DataErrorBindableBase(Dictionary&lt;string, Func&lt;object, string&lt;&lt; _validators)"/>
         public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
         {
             // Get repositories
@@ -97,10 +103,12 @@ namespace TheForestDSM.ViewModels
             ShutdownServiceData = mShutdownServiceDataRepo.Read(ShutdownServiceDataSchema.ID_DEFAULT_VALUE);
 
             ServerOutputText = "";
+            ServerStatusColour = new SolidColorBrush();
 
             // Subscribe to events
             ServerStatusChanged += HomePageViewModel_OnServerStatusChange;
             ShutdownServiceData.PropertyChanged += ShutdownServiceData_PropertyChanged;
+            EventAggregator.GetEvent<ConfigurationSavedEvent>().Subscribe(OnConfigurationSaved);
 
             // Raise events
             StartServerCommand.RaiseCanExecuteChanged();
@@ -108,6 +116,22 @@ namespace TheForestDSM.ViewModels
             ScheduleShutdownCommand.RaiseCanExecuteChanged();
             CancelShutdownCommand.RaiseCanExecuteChanged();
             RaiseServerStatusChanged();
+
+            // Start a thread to poll the shutdown service (parts of the UI need to be updated based on whether the server is running)
+            RefreshUIThreadCancellationTokenSource = new CancellationTokenSource();
+            new Thread(RefreshUI)
+            {
+                IsBackground = true
+            }.Start();
+        }
+
+        private void OnConfigurationSaved(Configuration newConfig)
+        {
+            Config = newConfig;
+
+            RefreshUIThreadCancellationTokenSource.Cancel(); // Cancel the delay in the thread that refreshes the UI
+
+            RefreshUIThreadCancellationTokenSource = new CancellationTokenSource(); // Renew the cancellation token to allow the delay to be restarted
         }
 
         private void ShutdownServiceData_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -117,6 +141,20 @@ namespace TheForestDSM.ViewModels
                 ScheduleShutdownCommand.RaiseCanExecuteChanged();
             }
         }
+
+        private void HomePageViewModel_OnServerStatusChange(object sender, EventArgs e)
+        {
+            // Check if the server is running
+            if (CheckServerStatus())
+            {
+                ServerStatusColour = new SolidColorBrush(Colors.Lime);
+            }
+            else
+            {
+                ServerStatusColour = new SolidColorBrush(Colors.Red);
+            }
+        }
+
 
         private void StartServerExecute()
         {
@@ -325,16 +363,21 @@ namespace TheForestDSM.ViewModels
         }
 
 
-        private void HomePageViewModel_OnServerStatusChange(object sender, EventArgs e)
+        private async void RefreshUI()
         {
-            // Check if the server is running
-            if (CheckServerStatus())
+            while (true)
             {
-                ServerStatusColour = new SolidColorBrush(Colors.Lime);
-            }
-            else
-            {
-                ServerStatusColour = new SolidColorBrush(Colors.Red);
+                // ContinueWith prevents an exception being thrown when the task is cancelled. The task is
+                // cancelled so that the refresh interval can be updated instantly when it's changed by the user.
+                await Task.Delay(Config.RefreshIntervalInSeconds * 1000, RefreshUIThreadCancellationTokenSource.Token)
+                      .ContinueWith(task => { }); 
+
+                StartServerCommand.RaiseCanExecuteChanged();
+                ShutdownServerCommand.RaiseCanExecuteChanged();
+                ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+
+                ServerStatusColour.Dispatcher.Invoke(() => RaiseServerStatusChanged());
             }
         }
 
