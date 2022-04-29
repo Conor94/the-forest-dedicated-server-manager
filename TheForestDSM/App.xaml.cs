@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Schemas;
+using TheForestDSM.Utilities;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -59,8 +60,7 @@ namespace TheForestDSM
 
         private SQLiteDAO SetupDatabase()
         {
-            // Save the database file to %PROGRAMDATA%\TheForestDSM
-            string dbFilePath = $@"{Environment.GetEnvironmentVariable("PROGRAMDATA")}\TheForestDSM";
+            string dbFilePath = new PathResolver().GetApplicationDataPath();
 
             // Create the directory for the database file if it doesn't exist
             if (!Directory.Exists(dbFilePath))
