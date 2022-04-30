@@ -1,0 +1,84 @@
+﻿<Window
+    x:Class="TheForestDSM.Views.ScheduleShutdown.ScheduleShutdownView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TheForestDSM.Views.ScheduleShutdown"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="{Binding Title}"
+    Width="460"
+    Height="140"
+    Background="WhiteSmoke"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+    <Window.Resources />
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style x:Key="ItemHeight" TargetType="FrameworkElement">
+                    <Setter Property="Height" Value="26" />
+                </Style>
+
+                <Style TargetType="ComboBox">
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+            </StackPanel.Resources>
+
+            <StackPanel
+                Margin="0,0,0,10"
+                Orientation="Horizontal"
+                Style="{StaticResource ItemHeight}">
+                <Label HorizontalContentAlignment="Right" Content="Shutdown" />
+
+                <ComboBox
+                    Width="53"
+                    Margin="10,0,0,0"
+                    ItemsSource="{Binding ShutdownFormatValues, Mode=OneTime}"
+                    SelectedItem="{Binding SelectedShutdownFormat}" />
+
+                <xctk:DateTimePicker
+                    Width="217"
+                    Margin="20,0,0,0"
+                    Visibility="{Binding DateInput.Visibility}"
+                    Value="{Binding DateInput.Value}" />
+
+                <xctk:IntegerUpDown
+                    Width="114"
+                    Margin="20,0,0,0"
+                    HorizontalContentAlignment="Center"
+                    Increment="1"
+                    Minimum="1"
+                    Visibility="{Binding MinutesInput.Visibility}"
+                    Value="{Binding MinutesInput.Value}" />
+                <xctk:DoubleUpDown
+                    Width="114"
+                    Margin="20,0,0,0"
+                    HorizontalContentAlignment="Center"
+                    Increment="0.1"
+                    Minimum="0.1"
+                    Visibility="{Binding HoursInput.Visibility}"
+                    Value="{Binding HoursInput.Value}" />
+                <ComboBox
+                    Width="83"
+                    Margin="20,0,0,0"
+                    ItemsSource="{Binding TimeFormatValues, Mode=OneTime}"
+                    SelectedItem="{Binding SelectedTimeFormat}"
+                    Visibility="{Binding SelectedTimeFormatVisiblity}" />
+            </StackPanel>
+
+            <CheckBox
+                Margin="45,0,0,10"
+                Content="Shutdown machine?"
+                IsChecked="{Binding IsMachineShutdown}" />
+
+            <Button
+                Width="363"
+                Margin="0,0,0,0"
+                Command="{Binding ScheduleShutdownCommand}"
+                Content="Schedule Shutdown"
+                Style="{StaticResource ItemHeight}" />
+        </StackPanel>
+    </Grid>
+</Window>

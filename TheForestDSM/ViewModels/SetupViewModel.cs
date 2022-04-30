@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Windows;
 using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
+using TheForestDSM.Views;
 using Unity;
 
 namespace TheForestDSM.ViewModels
@@ -120,12 +121,12 @@ namespace TheForestDSM.ViewModels
         private void RefreshIntervalInfoExecute()
         {
             new InfoDialog(AppStrings.RefreshIntervalDialog_Title, AppStrings.RefreshIntervalDialog_Content)
-                .ShowDialog();
+                          .ShowDialog();
         }
 
         private void CloseWindow()
         {
-            EventAggregator.GetEvent<CloseWindowRequestEvent>().Publish();
+            EventAggregator.GetEvent<SetupViewCloseRequest>().Publish();
         }
     }
 }

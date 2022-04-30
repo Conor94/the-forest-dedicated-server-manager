@@ -136,9 +136,18 @@
     <Compile Include="Dialogs\InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Events\CloseWindowRequestEvent.cs" />
+    <Compile Include="Events\ScheduleShutdownViewCloseRequest.cs" />
+    <Compile Include="Events\SetupViewCloseRequest.cs" />
     <Compile Include="Events\ConfigurationSavedEvent.cs" />
+    <Compile Include="Events\ShutdownScheduledEvent.cs" />
+    <Compile Include="ViewModels\ScheduleShutdown\ScheduleShutdownInput.cs" />
+    <Compile Include="ViewModels\ScheduleShutdown\ScheduleShutdownViewModel.cs" />
+    <Compile Include="ViewModels\ScheduleShutdown\ShutdownFormat.cs" />
+    <Compile Include="ViewModels\ScheduleShutdown\TimeFormat.cs" />
     <Compile Include="ViewModels\SetupViewModel.cs" />
+    <Compile Include="Views\ScheduleShutdown\ScheduleShutdownView.xaml.cs">
+      <DependentUpon>ScheduleShutdownView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SetupView.xaml.cs">
       <DependentUpon>SetupView.xaml</DependentUpon>
     </Compile>
@@ -169,6 +178,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ScheduleShutdown\ScheduleShutdownView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SetupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +245,7 @@
   <ItemGroup>
     <Resource Include="Images\info.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.115.5\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

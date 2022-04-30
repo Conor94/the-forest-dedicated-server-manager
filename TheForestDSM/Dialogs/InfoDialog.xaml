@@ -10,8 +10,7 @@
     Background="WhiteSmoke"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
-    SizeToContent="WidthAndHeight"
-    WindowStartupLocation="CenterOwner">
+    SizeToContent="WidthAndHeight">
     <Grid
         x:Name="InfoDialogGrid"
         Width="{Binding ActualWidth, ElementName=InfoDialogWindow}"

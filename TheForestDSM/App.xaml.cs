@@ -12,6 +12,7 @@ using System.Windows;
 using TheForestDSM.ViewModels;
 using TheForestDSM.Views;
 using Unity;
+using TheForestDSM.ViewModels.ScheduleShutdown;
 
 namespace TheForestDSM
 {
@@ -46,12 +47,13 @@ namespace TheForestDSM
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // Register transients
-            containerRegistry.Register<IContainerProvider, UnityContainerExtension>();
             containerRegistry.Register<SetupViewModel>();
+            containerRegistry.Register<ScheduleShutdownViewModel>();
 
             SQLiteDAO dao = SetupDatabase();
 
             // Register singletons
+            containerRegistry.RegisterSingleton<IContainerProvider, UnityContainerExtension>();
             containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
             containerRegistry.RegisterSingleton<MainWindow>(); // don't need this, but it's more explicit
             containerRegistry.RegisterSingleton<ConfigurationRepository>(() => new ConfigurationRepository(dao));

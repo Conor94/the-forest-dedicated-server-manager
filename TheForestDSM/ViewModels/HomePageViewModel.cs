@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using TheForestDSM.Events;
 using TheForestDSM.Views;
+using TheForestDSM.Views.ScheduleShutdown;
 
 namespace TheForestDSM.ViewModels
 {
@@ -26,7 +27,7 @@ namespace TheForestDSM.ViewModels
         private readonly ShutdownServiceDataRepository mShutdownServiceDataRepo;
 
         public Configuration Config { get; private set; }
-        public ShutdownServiceData ShutdownServiceData { get; }
+        public ShutdownServiceData ShutdownServiceData { get; private set; }
         public bool UpdateUiThreadIsRunning { get; private set; }
 
         // Private only fields
@@ -109,6 +110,7 @@ namespace TheForestDSM.ViewModels
             ServerStatusChanged += HomePageViewModel_OnServerStatusChange;
             ShutdownServiceData.PropertyChanged += ShutdownServiceData_PropertyChanged;
             EventAggregator.GetEvent<ConfigurationSavedEvent>().Subscribe(OnConfigurationSaved);
+            EventAggregator.GetEvent<ShutdownScheduledEvent>().Subscribe(OnShutdownScheduled);
 
             // Raise events
             StartServerCommand.RaiseCanExecuteChanged();
@@ -259,36 +261,48 @@ namespace TheForestDSM.ViewModels
 
         private void ScheduleShutdownExecute()
         {
+            Container.Resolve<ScheduleShutdownView>().ShowDialog();
+        }
+
+        private void OnShutdownScheduled(ShutdownServiceData data)
+        {
+            ShutdownServiceData = data;
+
             try
             {
                 ServiceController controller = new ServiceController(mServiceName);
-                if (controller.Status != ServiceControllerStatus.Running)
+
+                // Start the service
+                string output = "";
+                if (controller.Status == ServiceControllerStatus.Running)
                 {
-                    // Save the shutdown info
-                    ShutdownServiceData.IsShutdownScheduled = true;
-                    mShutdownServiceDataRepo.Update(ShutdownServiceData);
+                    controller.Stop();
+                    controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
 
-                    // Start the service
-                    controller.Start();
-
-                    Thread.Sleep(500);
-
-                    ScheduleShutdownCommand.RaiseCanExecuteChanged();
-                    CancelShutdownCommand.RaiseCanExecuteChanged();
-
-                    if (ShutdownServiceData.IsMachineShutdown)
-                    {
-                        AppendServerOutputText($"Shutdown scheduled for {ShutdownServiceData.ShutdownTime}. A machine shutdown is also scheduled.");
-                    }
-                    else
-                    {
-                        AppendServerOutputText($"Shutdown scheduled for {ShutdownServiceData.ShutdownTime}.");
-                    }
+                    output = $"Cancelled the previously scheduled shutdown. Scheduling a new shutdown for {ShutdownServiceData.ShutdownTime}.";
                 }
                 else
                 {
-                    AppendServerOutputText("Application attemped to schedule a shutdown when the shutdown scheduler service was already started.");
+                    output = $"Shutdown scheduled for {ShutdownServiceData.ShutdownTime}.";
                 }
+
+                if (ShutdownServiceData.IsMachineShutdown)
+                {
+                    output += " A machine shutdown is also scheduled.";
+                }
+
+                // Save the shutdown info
+                ShutdownServiceData.IsShutdownScheduled = true;
+                mShutdownServiceDataRepo.Update(ShutdownServiceData);
+
+                controller.Start();
+
+                Thread.Sleep(500);
+
+                ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                CancelShutdownCommand.RaiseCanExecuteChanged();
+
+                AppendServerOutputText(output);
             }
             catch (Exception e)
             {
@@ -300,14 +314,19 @@ namespace TheForestDSM.ViewModels
                 {
                     AppendServerOutputText("Failed to start the shutdown service due to an unknown error.");
                 }
+
+                if (e.GetType() == typeof(System.ServiceProcess.TimeoutException))
+                {
+                    //TODO Log that a timeout occurred
+                }
             }
         }
+
         private bool ScheduleShutdownCanExecute()
         {
-            return CheckServerStatus() // Make sure the dedicated server is running
-                   && !ShutdownServiceData.IsShutdownScheduled // Check if a shutdown has already been scheduled
-                   && ShutdownServiceDataValidator.ValidateShutdownTime(ShutdownServiceData.ShutdownTime, out string _)
-                   && !string.IsNullOrWhiteSpace(ShutdownServiceData.ShutdownTime);
+            return CheckServerStatus(); // Make sure the dedicated server is running
+                   //&& ShutdownServiceDataValidator.ValidateShutdownTime(ShutdownServiceData.ShutdownTime, out string _)
+                   //&& !string.IsNullOrWhiteSpace(ShutdownServiceData.ShutdownTime);
         }
 
         private void CancelShutdownExecute()

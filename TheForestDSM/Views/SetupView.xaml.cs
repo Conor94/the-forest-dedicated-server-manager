@@ -9,7 +9,6 @@ namespace TheForestDSM.Views
     /// </summary>
     public partial class SetupView : Window
     {
-        #region Constructors
         public SetupView()
         {
             InitializeComponent();
@@ -18,9 +17,8 @@ namespace TheForestDSM.Views
         public SetupView(SetupViewModel viewModel) : this()
         {
             DataContext = viewModel;
-            viewModel.EventAggregator.GetEvent<CloseWindowRequestEvent>().Subscribe(CloseWindowExecute);
+            viewModel.EventAggregator.GetEvent<SetupViewCloseRequest>().Subscribe(CloseWindowExecute);
         }
-        #endregion
 
         private void CloseWindowExecute()
         {
