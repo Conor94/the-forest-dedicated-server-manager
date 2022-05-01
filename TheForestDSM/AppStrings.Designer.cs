@@ -61,6 +61,15 @@ namespace TheForestDSM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \TheForestDSM;component\Images.
+        /// </summary>
+        internal static string ImagesPath {
+            get {
+                return ResourceManager.GetString("ImagesPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The refresh interval sets how frequently this application will refresh the user interface. Examples of refreshing the user interface are disabling/enabling buttons and changing the server status.
         ///
         ///Increase this value if you&apos;re having performance issues and decrease the value to ensure the application always displays the most up-to-date information..

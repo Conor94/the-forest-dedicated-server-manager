@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TheForestDSM.Views.ScheduleShutdown"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
     Width="460"
@@ -12,24 +13,31 @@
     Background="WhiteSmoke"
     ResizeMode="NoResize"
     mc:Ignorable="d">
-    <Window.Resources />
+    <Window.Resources>
+        <Style x:Key="ItemHeight" TargetType="FrameworkElement">
+            <Setter Property="Height" Value="26" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="xctk:DateTimePicker">
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+            <Setter Property="Margin" Value="20,0,0,0" />
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding (Validation.Errors)/ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel.Resources>
-                <Style x:Key="ItemHeight" TargetType="FrameworkElement">
-                    <Setter Property="Height" Value="26" />
-                </Style>
+            <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
 
-                <Style TargetType="ComboBox">
-                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                </Style>
-            </StackPanel.Resources>
-
-            <StackPanel
-                Margin="0,0,0,10"
-                Orientation="Horizontal"
-                Style="{StaticResource ItemHeight}">
                 <Label HorizontalContentAlignment="Right" Content="Shutdown" />
 
                 <ComboBox
@@ -39,10 +47,12 @@
                     SelectedItem="{Binding SelectedShutdownFormat}" />
 
                 <xctk:DateTimePicker
+                    x:Name="DateTimePicker"
                     Width="217"
-                    Margin="20,0,0,0"
+                    ClipValueToMinMax="True"
+                    Minimum="{Binding MinimumDate}"
                     Visibility="{Binding DateInput.Visibility}"
-                    Value="{Binding DateInput.Value}" />
+                    Value="{Binding DateInput.Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
 
                 <xctk:IntegerUpDown
                     Width="114"
@@ -69,7 +79,7 @@
             </StackPanel>
 
             <CheckBox
-                Margin="45,0,0,10"
+                Margin="5,0,0,10"
                 Content="Shutdown machine?"
                 IsChecked="{Binding IsMachineShutdown}" />
 

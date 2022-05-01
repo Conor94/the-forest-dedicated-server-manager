@@ -1,5 +1,6 @@
 ﻿using DataAccess.Models;
 using DataAccess.Schemas;
+using DataAccess.Validators;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -7,7 +8,10 @@ using PrismMvvmBase.Bindable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
 using Unity;
 
@@ -84,6 +88,15 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
             get => mDateInput;
             set => SetProperty(ref mDateInput, value);
         }
+        public DateTime MinimumDate
+        {
+            get
+            {
+                DateTime currentTime = DateTime.Now;
+
+                return currentTime.AddMinutes(1);
+            }
+        }
         public ScheduleShutdownInput<int> MinutesInput
         {
             get => mMinutesInput;
@@ -116,6 +129,13 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
 
             SelectedShutdownFormat = ShutdownFormat.at;
             SelectedTimeFormatVisiblity = Visibility.Collapsed; // Shutdown "at" doesn't use time format
+
+            DateInput.PropertyChanged += DateInput_PropertyChanged;
+        }
+
+        private void DateInput_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ScheduleShutdownCommand.RaiseCanExecuteChanged();
         }
 
         private void SwitchTimeFormat(TimeFormat selectedTimeFormat)
@@ -134,37 +154,47 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
 
         private void ScheduleShutdownExecute()
         {
-            // Close the window and send shutdown information to HomePageViewModel
-            EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
-
-            ShutdownServiceData data = new ShutdownServiceData()
+            if (!ShutdownServiceDataValidator.ValidateShutdownTime(DateInput.Value, out string _))
             {
-                Id = ShutdownServiceDataSchema.ID_DEFAULT_VALUE,
-                IsMachineShutdown = IsMachineShutdown,
-                IsShutdownScheduled = true
-            };
-
-            if (SelectedShutdownFormat == ShutdownFormat.@in)
-            {
-                DateTime shutdownTime;
-                if (SelectedTimeFormat == TimeFormat.hours)
-                {
-                    shutdownTime = DateTime.Now.AddHours(HoursInput.Value);
-                }
-                else
-                {
-                    shutdownTime = DateTime.Now.AddMinutes(MinutesInput.Value);
-                }
-
-                data.ShutdownTime = shutdownTime.ToString();
-            }
-            else if (SelectedShutdownFormat == ShutdownFormat.at)
-            {
-                data.ShutdownTime = DateInput.Value.ToString();
+                new MessageDialog("Invalid shutdown time",
+                                  $"Shutdown time cannot be in the past. Current time is {DateTime.Now} and you attempted to schedule a shutdown for {DateInput.Value}.",
+                                  MessageDialogType.Warn).ShowDialog();
             }
 
-            EventAggregator.GetEvent<ShutdownScheduledEvent>().Publish(data);
-            EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
+            if (MessageBox.Show($"Are you sure you want to schedule a shutdown for {DateInput.Value}?", "Schedule shutdown", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                // Close the window and send shutdown information to HomePageViewModel
+                EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
+
+                ShutdownServiceData data = new ShutdownServiceData()
+                {
+                    Id = ShutdownServiceDataSchema.ID_DEFAULT_VALUE,
+                    IsMachineShutdown = IsMachineShutdown,
+                    IsShutdownScheduled = true
+                };
+
+                if (SelectedShutdownFormat == ShutdownFormat.@in)
+                {
+                    DateTime shutdownTime;
+                    if (SelectedTimeFormat == TimeFormat.hours)
+                    {
+                        shutdownTime = DateTime.Now.AddHours(HoursInput.Value);
+                    }
+                    else
+                    {
+                        shutdownTime = DateTime.Now.AddMinutes(MinutesInput.Value);
+                    }
+
+                    data.ShutdownTime = shutdownTime.ToString();
+                }
+                else if (SelectedShutdownFormat == ShutdownFormat.at)
+                {
+                    data.ShutdownTime = DateInput.Value.ToString();
+                }
+
+                EventAggregator.GetEvent<ShutdownScheduledEvent>().Publish(data);
+                EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
+            }
         }
     }
 }

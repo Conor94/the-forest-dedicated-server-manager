@@ -10,11 +10,6 @@ namespace DataAccess.Models
         private int mId;
         private bool mIsShutdownScheduled;
 
-        public ShutdownServiceData()
-        {
-            AddValidator(nameof(ShutdownTime), new DataErrorValidator<string>(ShutdownServiceDataValidator.ValidateShutdownTime));
-        }
-
         public int Id
         {
             get => mId;

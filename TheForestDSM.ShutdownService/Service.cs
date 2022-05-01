@@ -3,18 +3,21 @@ using DataAccess.Models;
 using DataAccess.Repositories;
 using DataAccess.Schemas;
 using Extensions;
+using NLog;
 using System;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
-using System.Threading;
 using System.Timers;
+using TheForestDSM.Utilities;
 
 namespace TheForestDSM.ShutdownService
 {
     public partial class Service : ServiceBase
     {
         private System.Timers.Timer mShutdownTimer;
+
+        private Logger Logger => LogManager.GetCurrentClassLogger();
 
         public System.Timers.Timer ShutdownTimer
         {
@@ -34,7 +37,7 @@ namespace TheForestDSM.ShutdownService
             }
             catch (Exception e)
             {
-                LogException($"Exception occurred while instantiating {ServiceName}.", e);
+                WriteLog($"Exception occurred while instantiating {ServiceName}.", LogLevel.Error, e);
             }
         }
 
@@ -42,8 +45,7 @@ namespace TheForestDSM.ShutdownService
         {
             try
             {
-                string dbFilePath = $@"{Environment.GetEnvironmentVariable("PROGRAMDATA")}\TheForestDSM";
-                SQLiteDAO dao = new SQLiteDAO($@"Data Source={dbFilePath}\TheForestDSM.db");
+                SQLiteDAO dao = new SQLiteDAO($@"Data Source={new PathResolver().GetApplicationDataPath()}\TheForestDSM.db");
 
                 ShutdownServiceDataRepo = new ShutdownServiceDataRepository(dao);
                 ShutdownServiceData = ShutdownServiceDataRepo.Read(ShutdownServiceDataSchema.ID_DEFAULT_VALUE);
@@ -66,9 +68,8 @@ namespace TheForestDSM.ShutdownService
                 {
                     // Shutdown time was in the past (the GUI application should prevent this), so the timer can't be started.
                     // Log a message and then stop the service.
-                    EventLog.WriteEntry("Shutdown timer was not started because the specified shutdown time was in the past.\n" +
-                                            $"Current time: {currentTime}\n" +
-                                            $"Shutdown time: {shutdownTime}");
+                    Logger.Warn("Shutdown timer was not started because the provided shutdown time was in the past. " +
+                                                 $"Current time = {currentTime}, Shutdown time = {shutdownTime}");
                     Stop();
                 }
                 ShutdownTimer.Elapsed += ShutdownTimer_OnElapsed;
@@ -76,7 +77,7 @@ namespace TheForestDSM.ShutdownService
             }
             catch (Exception e)
             {
-                LogException($"Exception occurred while starting {ServiceName}.", e);
+                WriteLog($"Exception occurred while starting {ServiceName}.", LogLevel.Error, e);
             }
         }
 
@@ -92,7 +93,7 @@ namespace TheForestDSM.ShutdownService
             }
             catch (Exception e)
             {
-                LogException($"Exception occurred while stopping {ServiceName}.", e);
+                WriteLog($"Exception occurred while stopping {ServiceName}.", LogLevel.Error, e);
             }
         }
 
@@ -106,7 +107,7 @@ namespace TheForestDSM.ShutdownService
             }
             catch (Exception e)
             {
-                LogException($"{ServiceName} threw an exception when the local system was shutting down.", e);
+                WriteLog($"{ServiceName} threw an exception when the local system was shutting down.", LogLevel.Error, e);
             }
         }
 
@@ -123,7 +124,7 @@ namespace TheForestDSM.ShutdownService
             }
             catch (Exception e)
             {
-                LogException($"{ServiceName} threw an exception when the local user logged off.", e);
+                WriteLog($"{ServiceName} threw an exception when the local user logged off.", LogLevel.Error, e);
             }
         }
 
@@ -133,37 +134,48 @@ namespace TheForestDSM.ShutdownService
             {
                 // Shutdown server
                 Process[] processes = Process.GetProcessesByName(Config.ServerProcessName);
-                if (processes.Length == 1)
-                {
-                    processes[0].Kill();
-                    Thread.Sleep(100);
-                    if (processes[0].HasExited)
-                    {
-                        EventLog.WriteEntry("Dedicated server has been shutdown.");
-                    }
-                    else
-                    {
-                        EventLog.WriteEntry("Dedicated server failed to shutdown.");
-                    }
-                }
-                else if (processes.Length == 0)
-                {
-                    EventLog.WriteEntry($"{ServiceName} attempted to shutdown the server while the server was not running.");
-                }
-                else if (processes.Length > 1)
-                {
-                    throw new Exception("Multiple processes with the same name found.");
-                }
 
-                // Shutdown the system if needed
-                if (ShutdownServiceData.IsMachineShutdown)
+                if (processes.Length == 0)
                 {
-                    ShutdownMachine();
+                    Logger.Warn($"{ServiceName} attempted to shutdown the server while the server was not running.");
+                }
+                else
+                {
+                    bool multipleInstances = false; // Used to write a different log message if there's multiple dedicated server instances
+                    if (processes.Length > 1)
+                    {
+                        Logger.Warn($"Multiple dedicated server instances were found when the {ServiceName} was terminating the dedicated server. " +
+                                                     $"{ServiceName} will attempt to close all instances of the dedicated server.");
+
+                        multipleInstances = true;
+                    }
+
+                    for (int i = 0; i < processes.Length; i++)
+                    {
+                        processes[i].Kill();
+                        processes[i].WaitForExit(10000);
+
+                        if (processes[i].HasExited)
+                        {
+                            Logger.Info($"Dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")} has been shutdown.");
+                        }
+                        else
+                        {
+                            Logger.Error($"Failed to shutdown the dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")}.");
+                        }
+                    }
+
+                    // Shutdown the system if needed
+                    if (ShutdownServiceData.IsMachineShutdown)
+                    {
+                        ShutdownMachine();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                LogException("Exception occurred when the shutdown timer elapsed.", ex);
+                Logger.Log(LogLevel.Error, ex, "Exception occurred when the shutdown timer elapsed.");
+                WriteLog("Exception occurred when the shutdown timer elapsed.", LogLevel.Error, ex);
             }
             finally
             {
@@ -172,19 +184,28 @@ namespace TheForestDSM.ShutdownService
             }
         }
 
-        private void LogException(string friendlyMessage, Exception e)
+        private void WriteLog(string message, LogLevel logLevel, Exception exception = null)
         {
-            StringBuilder exceptionInfo = new StringBuilder();
-            foreach (Exception exception in e.GetExceptions())
+            if (exception != null)
             {
-                exceptionInfo.AppendLine($"Type: {exception.GetType()}");
-                exceptionInfo.AppendLine($"Message: {exception.Message}");
-                exceptionInfo.AppendLine($"StackTrace: {exception.StackTrace}\n\n");
-            }
+                StringBuilder exceptionInfo = new StringBuilder();
+                foreach (Exception ex in exception.GetExceptions())
+                {
+                    exceptionInfo.AppendLine($"Type: {ex.GetType()}");
+                    exceptionInfo.AppendLine($"Message: {ex.Message}");
+                    exceptionInfo.AppendLine($"StackTrace: {ex.StackTrace}\n\n");
+                }
 
-            // Write to the Windows Event Log (these logs can be viewed in Event Viewer -> Windows Logs -> Application)
-            EventLog.WriteEntry($"{friendlyMessage}\n\n" +
-                                exceptionInfo.ToString());
+                // Write to the Windows Event Log (these logs can be viewed in Event Viewer -> Windows Logs -> Application)
+                EventLog.WriteEntry($"{message}\n\n" +
+                                    exceptionInfo.ToString());
+
+                Logger.Log(logLevel, exception, message);
+            }
+            else
+            {
+                Logger.Log(logLevel, message);
+            }
         }
 
         /// <summary>
@@ -192,21 +213,30 @@ namespace TheForestDSM.ShutdownService
         /// </summary>
         private void ShutdownMachine()
         {
-            // Test creating a process to call a command
-            Process process = new Process()
+            try
             {
-                StartInfo = new ProcessStartInfo()
+                // Use the command line to shutdown the system
+                Process process = new Process()
                 {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    FileName = "cmd.exe",
-                    Arguments = "/C shutdown /s",
-                    WindowStyle = ProcessWindowStyle.Hidden
-                },
-            };
-            EventLog.WriteEntry($"{ServiceName} is shutting down the system.");
-            process.Start();
-            process.Dispose();
+                    StartInfo = new ProcessStartInfo()
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        FileName = "cmd.exe",
+                        Arguments = "/C shutdown /s",
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    },
+                };
+
+                Logger.Info($"{ServiceName} is shutting down the system.");
+
+                process.Start();
+                process.Dispose();
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, "Error occurred when the shutdown service attempted to shutdown the system.");
+            }
         }
     }
 }
