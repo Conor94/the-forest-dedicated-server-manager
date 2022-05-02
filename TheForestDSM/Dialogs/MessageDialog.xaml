@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:TheForestDSM.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="InfoDialogWindow"
-    MaxWidth="400"
+    MaxWidth="500"
     Background="WhiteSmoke"
     ResizeMode="NoResize"
     ShowInTaskbar="False"

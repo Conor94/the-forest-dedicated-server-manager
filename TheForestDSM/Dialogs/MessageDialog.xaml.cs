@@ -99,7 +99,7 @@ namespace TheForestDSM.Dialogs
             {
                 NegativeButton.Visibility = Visibility.Collapsed;
 
-                PositiveButton.Margin = new Thickness(80, 0, 0, 0); // Center the button when there's only one
+                PositiveButton.Margin = new Thickness(150, 0, 0, 0); // Center the button when there's only one
 
                 PositiveButton.IsDefault = true;
             }
@@ -107,7 +107,7 @@ namespace TheForestDSM.Dialogs
             {
                 NegativeButton.Content = negativeButtonText;
 
-                PositiveButton.Margin = new Thickness(25, 0, 0, 0);
+                PositiveButton.Margin = new Thickness(70, 0, 0, 0);
                 NegativeButton.Margin = new Thickness(0, 0, 0, 0);
 
                 PositiveButton.IsDefault = false;
