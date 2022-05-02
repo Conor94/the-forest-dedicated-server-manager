@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using DataAccess.Repositories;
 using DataAccess.Schemas;
-using TheForestDSM.Utilities;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -9,10 +8,11 @@ using System;
 using System.Data.SQLite;
 using System.IO;
 using System.Windows;
+using TheForestDSM.Utilities;
 using TheForestDSM.ViewModels;
+using TheForestDSM.ViewModels.ScheduleShutdown;
 using TheForestDSM.Views;
 using Unity;
-using TheForestDSM.ViewModels.ScheduleShutdown;
 
 namespace TheForestDSM
 {

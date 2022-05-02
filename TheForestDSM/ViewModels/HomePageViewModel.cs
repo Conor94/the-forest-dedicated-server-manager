@@ -325,8 +325,8 @@ namespace TheForestDSM.ViewModels
         private bool ScheduleShutdownCanExecute()
         {
             return IsDedicatedServerRunning(); // Make sure the dedicated server is running
-                   //&& ShutdownServiceDataValidator.ValidateShutdownTime(ShutdownServiceData.ShutdownTime, out string _)
-                   //&& !string.IsNullOrWhiteSpace(ShutdownServiceData.ShutdownTime);
+                                               //&& ShutdownServiceDataValidator.ValidateShutdownTime(ShutdownServiceData.ShutdownTime, out string _)
+                                               //&& !string.IsNullOrWhiteSpace(ShutdownServiceData.ShutdownTime);
         }
 
         private void CancelShutdownExecute()
@@ -389,7 +389,7 @@ namespace TheForestDSM.ViewModels
                 // ContinueWith prevents an exception being thrown when the task is cancelled. The task is
                 // cancelled so that the refresh interval can be updated instantly when it's changed by the user.
                 await Task.Delay(Config.RefreshIntervalInSeconds * 1000, RefreshUIThreadCancellationTokenSource.Token)
-                      .ContinueWith(task => { }); 
+                      .ContinueWith(task => { });
 
                 StartServerCommand.RaiseCanExecuteChanged();
                 ShutdownServerCommand.RaiseCanExecuteChanged();

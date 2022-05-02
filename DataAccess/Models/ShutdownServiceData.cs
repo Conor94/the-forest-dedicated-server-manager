@@ -1,5 +1,4 @@
-﻿using DataAccess.Validators;
-using PrismMvvmBase.Bindable;
+﻿using PrismMvvmBase.Bindable;
 
 namespace DataAccess.Models
 {

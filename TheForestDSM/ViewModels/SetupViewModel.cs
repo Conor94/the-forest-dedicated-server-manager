@@ -12,7 +12,6 @@ using System.ComponentModel;
 using System.Windows;
 using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
-using TheForestDSM.Views;
 using Unity;
 
 namespace TheForestDSM.ViewModels
