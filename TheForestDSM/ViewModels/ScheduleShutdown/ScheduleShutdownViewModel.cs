@@ -161,7 +161,7 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
                                   MessageDialogType.Warn).ShowDialog();
             }
 
-            if (MessageBox.Show($"Are you sure you want to schedule a shutdown for {DateInput.Value}?", "Schedule shutdown", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            if (new MessageDialog("Confirm scheduled shutdown", $"Are you sure you want to schedule a shutdown for {DateInput.Value}?", MessageDialogType.Info, "Yes", "No").ShowDialog() == true)
             {
                 // Close the window and send shutdown information to HomePageViewModel
                 EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
