@@ -141,6 +141,17 @@ Increase this value if you're having performance issues and decrease the value t
   <data name="ScheduleShutdownConfirmation_Title" xml:space="preserve">
     <value>Confirm scheduled shutdown</value>
   </data>
+  <data name="ServerArgumentsDialog_DialogContent" xml:space="preserve">
+    <value>Server arguments are options used to start the server. For example, you can use -batchmode to run the server in the background.
+
+There's a good tutorial written by the Steam community that discusses server arguments in detail here: </value>
+  </data>
+  <data name="ServerArgumentsDialog_DialogLink" xml:space="preserve">
+    <value>https://steamcommunity.com/sharedfiles/filedetails/?id=907906289</value>
+  </data>
+  <data name="ServerArgumentsDialog_DialogTitle" xml:space="preserve">
+    <value>Server Argument Information</value>
+  </data>
   <data name="ServiceName" xml:space="preserve">
     <value>TheForestDSMShutdownService</value>
   </data>

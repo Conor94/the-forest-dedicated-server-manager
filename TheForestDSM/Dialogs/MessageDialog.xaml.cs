@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
 
 namespace TheForestDSM.Dialogs
@@ -17,18 +19,61 @@ namespace TheForestDSM.Dialogs
         {
         }
 
+        /// <summary>Initializes a <see cref="MessageDialog"/> with only a positive button.</summary>
+        /// <param name="title">The title for the dialog.</param>
+        /// <param name="content">The content displayed by the dialog. Only <see cref="string"/> and <see cref="Hyperlink"/> types are supported.</param>
+        /// <param name="type">The type of dialog. Refer to <see cref="MessageDialogType"/> for the available types.</param>
+        /// <param name="positiveButtonText">The text for the positive button.</param>
+        /// <exception cref="ArgumentException">Thrown if an invalid type is for <paramref name="content"/>.</exception>
+        public MessageDialog(string title, object[] content, MessageDialogType type, string positiveButtonText = "Ok") : this(title, content, type, positiveButtonText, null)
+        {
+        }
+
         /// <summary>Initializes a <see cref="MessageDialog"/> with positive and negative button.</summary>
-        /// <param name="title"></param>
-        /// <param name="content"></param>
-        /// <param name="type"></param>
-        /// <param name="positiveButtonText"></param>
-        /// <param name="negativeButtonText"></param>
+        /// <param name="title">The title for the dialog.</param>
+        /// <param name="content">The content displayed by the dialog. Only <see cref="string"/> and <see cref="Hyperlink"/> types are supported.</param>
+        /// <param name="type">The type of dialog. Refer to <see cref="MessageDialogType"/> for the available types.</param>
+        /// <param name="positiveButtonText">The text for the positive button.</param>
+        /// <param name="negativeButtonText">The text for the negative button.</param>
+        /// <exception cref="ArgumentException">Thrown if an invalid type is for <paramref name="content"/>.</exception>
+        public MessageDialog(string title, object[] content, MessageDialogType type, string positiveButtonText, string negativeButtonText) : this(title, "", type, positiveButtonText, negativeButtonText)
+        {
+            // Can't use ContentBox.Inlines.AddRange(content) because it throws this exception:
+            // System.ArgumentException: 'An item of collection 'range' has unexpected type Inline (expected type was Inline). Parameter name: value'
+
+            foreach (object item in content)
+            {
+                if (item is string str)
+                {
+                    ContentBox.Inlines.Add(str);
+                }
+                else if (item is Hyperlink element)
+                {
+                    element.RequestNavigate += Link_RequestNavigate;
+                    ContentBox.Inlines.Add(element);
+                }
+                else
+                {
+                    throw new ArgumentException($"Only 'string' and 'Hyperlink' types are supported for content.", nameof(content));
+                }
+            }
+        }
+
+        /// <summary>Initializes a <see cref="MessageDialog"/> with positive and negative button.</summary>
+        /// <param name="title">The title for the dialog.</param>
+        /// <param name="content">The content for the dialog.</param>
+        /// <param name="type">The type of dialog. Refer to <see cref="MessageDialogType"/> for the available types.</param>
+        /// <param name="positiveButtonText">The text for the positive button.</param>
+        /// <param name="negativeButtonText">The text for the negative button.</param>
         public MessageDialog(string title, string content, MessageDialogType type, string positiveButtonText, string negativeButtonText)
         {
             InitializeComponent();
 
             Title = title;
-            ContentBox.Text = content;
+            if (!string.IsNullOrEmpty(content))
+            {
+                ContentBox.Text = content;
+            }
 
             switch (type)
             {
@@ -68,6 +113,12 @@ namespace TheForestDSM.Dialogs
                 PositiveButton.IsDefault = false;
                 NegativeButton.IsDefault = true;
             }
+        }
+
+        private void Link_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.AbsoluteUri).Dispose();
+            e.Handled = true;
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

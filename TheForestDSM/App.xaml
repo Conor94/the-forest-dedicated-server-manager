@@ -7,16 +7,37 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     Startup="OnStartup">
     <Application.Resources>
-        <sys:String x:Key="AppTitle">The Forest Dedicated Server Manager</sys:String>
+        <ControlTemplate x:Key="TextBoxErrorTemplate" TargetType="Control">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="1">
+                    <AdornedElementPlaceholder x:Name="TextBoxErrorTemplateAdorner" />
+                </Border>
+                <TextBlock Foreground="Red" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, ElementName=TextBoxErrorTemplateAdorner}" />
+            </StackPanel>
+        </ControlTemplate>
 
         <Style x:Key="TextBoxStyle" TargetType="TextBox">
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource TextBoxErrorTemplate}" />
+
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip" Value="{Binding (Validation.Errors)/ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
                 </Trigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MediumButton" TargetType="Button">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Height" Value="30" />
+        </Style>
+
+        <Style
+            x:Key="WideMediumButton"
+            BasedOn="{StaticResource MediumButton}"
+            TargetType="Button">
+            <Setter Property="Width" Value="120" />
         </Style>
     </Application.Resources>
 </prism:PrismApplication>

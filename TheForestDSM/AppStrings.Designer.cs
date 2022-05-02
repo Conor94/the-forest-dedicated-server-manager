@@ -126,6 +126,35 @@ namespace TheForestDSM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server arguments are options used to start the server. For example, you can use -batchmode to run the server in the background.
+        ///
+        ///There&apos;s a good tutorial written by the Steam community that discusses server arguments in detail here: .
+        /// </summary>
+        internal static string ServerArgumentsDialog_DialogContent {
+            get {
+                return ResourceManager.GetString("ServerArgumentsDialog_DialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://steamcommunity.com/sharedfiles/filedetails/?id=907906289.
+        /// </summary>
+        internal static string ServerArgumentsDialog_DialogLink {
+            get {
+                return ResourceManager.GetString("ServerArgumentsDialog_DialogLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server Argument Information.
+        /// </summary>
+        internal static string ServerArgumentsDialog_DialogTitle {
+            get {
+                return ResourceManager.GetString("ServerArgumentsDialog_DialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TheForestDSMShutdownService.
         /// </summary>
         internal static string ServiceName {
