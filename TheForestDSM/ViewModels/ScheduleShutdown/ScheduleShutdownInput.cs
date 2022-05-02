@@ -28,12 +28,7 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
         public TValue Value
         {
             get => mValue;
-            set
-            {
-                SetProperty(ref mValue, value);
-
-                Console.WriteLine("Changing property");
-            }
+            set => SetProperty(ref mValue, value);
         }
         public Visibility Visibility
         {

@@ -148,6 +148,7 @@
     <Compile Include="Events\SetupViewCloseRequest.cs" />
     <Compile Include="Events\ConfigurationSavedEvent.cs" />
     <Compile Include="Events\ShutdownScheduledEvent.cs" />
+    <Compile Include="Factories\HyperlinkFactory.cs" />
     <Compile Include="ViewModels\ScheduleShutdown\ScheduleShutdownInput.cs" />
     <Compile Include="ViewModels\ScheduleShutdown\ScheduleShutdownViewModel.cs" />
     <Compile Include="ViewModels\ScheduleShutdown\ShutdownFormat.cs" />

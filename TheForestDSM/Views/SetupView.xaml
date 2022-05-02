@@ -7,113 +7,141 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
     Width="572.988"
-    Height="225.351"
+    Height="282.151"
     Background="WhiteSmoke"
     ResizeMode="NoResize"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
-        <Style x:Key="WindowButton" TargetType="Button">
-            <Setter Property="Height" Value="20" />
-            <Setter Property="Width" Value="120" />
+        <Style x:Key="GridRowItem" TargetType="StackPanel">
+            <Setter Property="Margin" Value="10,0,0,0" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="-4,0,0,0" />
         </Style>
     </Window.Resources>
+
     <Window.InputBindings>
-        <KeyBinding Key="Return" Command="{Binding SaveSetupCommand}" />
+        <KeyBinding
+            Key="W"
+            Command="{Binding CancelSetupCommand}"
+            Modifiers="Ctrl" />
         <KeyBinding Key="Esc" Command="{Binding CancelSetupCommand}" />
     </Window.InputBindings>
 
-    <Grid>
-        <Label
-            Margin="15,20,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Right"
-            Content="Path to TheForestDedicatedServer.exe:" />
-        <TextBox
-            x:Name="ExePathTextBox"
-            Width="216"
-            Height="22"
-            Margin="228,22,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Style="{StaticResource TextBoxStyle}"
-            Text="{Binding Config.ServerExecutablePath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-        <Button
-            Width="75"
-            Margin="461,23,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding BrowseCommand}"
-            Content="Browse" />
+    <Grid Margin="0,5,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <Label
-            Width="213"
-            Margin="15,57,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Right"
-            Content="Server arguments:" />
-        <TextBox
-            Width="216"
-            Height="22"
-            Margin="228,59,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Style="{StaticResource TextBoxStyle}"
-            Text="{Binding Config.ServerArguments, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+        <StackPanel Grid.Row="0" Style="{StaticResource GridRowItem}">
+            <Label
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Path to TheForestDedicatedServer.exe:" />
 
-        <Label
-            Width="213"
-            Margin="15,95,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            HorizontalContentAlignment="Right"
-            Content="Refresh interval (seconds):" />
-        <xctk:IntegerUpDown
-            Width="127"
-            Height="22"
-            Margin="228,95,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Increment="1"
-            Maximum="60"
-            Minimum="1"
-            ToolTip="Minimum refresh interval is 1 second and maximum is 60 seconds"
-            Value="{Binding Config.RefreshIntervalInSeconds, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-        <!--<TextBox
-            Width="216"
-            Height="22"
-            Margin="228,95,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Style="{StaticResource TextBoxStyle}"
-            Text="{Binding Config.RefreshIntervalInSeconds, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, StringFormat={}{0:#}}" />-->
-        <TextBlock
-            Width="Auto"
-            Height="Auto"
-            Margin="369,100,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <Hyperlink Command="{Binding RefreshIntervalInfoCommand}">
-                What is this?
-            </Hyperlink>
-        </TextBlock>
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    x:Name="ExePathTextBox"
+                    Width="451"
+                    Height="22"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource TextBoxStyle}"
+                    Text="{Binding Config.ServerExecutablePath, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <Button
+                    Width="75"
+                    Height="{Binding Height, ElementName=ExePathTextBox}"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding BrowseCommand}"
+                    Content="Browse" />
+            </StackPanel>
+        </StackPanel>
 
-        <Button
-            Margin="164,144,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding SaveSetupCommand}"
-            Content="Save"
-            IsDefault="True"
-            Style="{StaticResource WindowButton}" />
-        <Button
-            Margin="302,144,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding CancelSetupCommand}"
-            Content="Cancel"
-            Style="{StaticResource WindowButton}" />
+        <StackPanel Grid.Row="1" Style="{StaticResource GridRowItem}">
+            <Label
+                Width="213"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Server arguments:" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                    Width="451"
+                    Height="22"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource TextBoxStyle}"
+                    Text="{Binding Config.ServerArguments, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <TextBlock
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+                    <Hyperlink Command="{Binding ServerArgumentsInfoCommand}">
+                        What is this?
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Style="{StaticResource GridRowItem}">
+            <Label
+                Width="213"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Refresh interval (seconds):" />
+            <StackPanel Orientation="Horizontal">
+                <xctk:IntegerUpDown
+                    Width="140"
+                    Height="22"
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Increment="1"
+                    Maximum="60"
+                    Minimum="1"
+                    ToolTip="Minimum refresh interval is 1 second and maximum is 60 seconds"
+                    Value="{Binding Config.RefreshIntervalInSeconds, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                <TextBlock
+                    Width="Auto"
+                    Height="Auto"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center">
+                    <Hyperlink Command="{Binding RefreshIntervalInfoCommand}">
+                        What is this?
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid
+            Grid.Row="3"
+            Width="425"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <Button
+                Width="180"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding SaveSetupCommand}"
+                Content="Save"
+                Style="{StaticResource MediumButton}" />
+            <Button
+                Width="180"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding CancelSetupCommand}"
+                Content="Cancel"
+                IsDefault="True"
+                Style="{StaticResource MediumButton}" />
+        </Grid>
+
     </Grid>
 </Window>

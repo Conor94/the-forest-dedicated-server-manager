@@ -10,8 +10,11 @@ using PrismMvvmBase.Bindable;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
+using TheForestDSM.Factories;
 using Unity;
 
 namespace TheForestDSM.ViewModels
@@ -25,6 +28,7 @@ namespace TheForestDSM.ViewModels
         private DelegateCommand mCancelSetupCommand;
         private DelegateCommand mBrowseCommand;
         private DelegateCommand mRefreshIntervalInfoCommand;
+        private DelegateCommand mServerArgumentsInfoCommand;
 
         public Configuration Config
         {
@@ -51,6 +55,10 @@ namespace TheForestDSM.ViewModels
             get => mRefreshIntervalInfoCommand ?? (mRefreshIntervalInfoCommand = new DelegateCommand(RefreshIntervalInfoExecute));
             set => mRefreshIntervalInfoCommand = value;
         }
+        public DelegateCommand ServerArgumentsInfoCommand
+        {
+            get => mServerArgumentsInfoCommand ?? (mServerArgumentsInfoCommand = new DelegateCommand(ServerArgumentsInfoExecute));
+        }
 
         [InjectionConstructor]
         public SetupViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
@@ -61,7 +69,6 @@ namespace TheForestDSM.ViewModels
 
             Title = "Setup";
 
-            // Raise events
             SaveSetupCommand.RaiseCanExecuteChanged();
         }
 
@@ -121,6 +128,18 @@ namespace TheForestDSM.ViewModels
         {
             new MessageDialog(AppStrings.RefreshIntervalDialog_DialogTitle, AppStrings.RefreshIntervalDialog_DialogContent, MessageDialogType.Info)
                              .ShowDialog();
+        }
+
+        private void ServerArgumentsInfoExecute()
+        {
+            object[] dialogContent = new object[]
+            {
+                AppStrings.ServerArgumentsDialog_DialogContent,
+                HyperlinkFactory.Create(AppStrings.ServerArgumentsDialog_DialogLink)
+            };
+
+            new MessageDialog(AppStrings.ServerArgumentsDialog_DialogTitle, dialogContent, MessageDialogType.Info)
+                 .ShowDialog();
         }
 
         private void CloseWindow()

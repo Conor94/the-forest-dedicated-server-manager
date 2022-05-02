@@ -10,7 +10,7 @@ namespace DataAccess.Validators
 
             if (!File.Exists(exePath) && exePath != "")
             {
-                errorMessage = "Server executable path is not valid.";
+                errorMessage = "This file does not exist.";
                 return false;
             }
 
