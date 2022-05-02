@@ -33,8 +33,10 @@ namespace TheForestDSM.Dialogs
             switch (type)
             {
                 case MessageDialogType.Info:
-                    BitmapImage img = new BitmapImage(new Uri($@"{AppStrings.ImagesPath}\info.png", UriKind.Relative));
-                    DialogImage.Source = img;
+                    DialogImage.Source = new BitmapImage(new Uri($@"{AppStrings.ImagesPath}\info.png", UriKind.Relative));
+                    break;
+                case MessageDialogType.Question:
+                    DialogImage.Source = new BitmapImage(new Uri($@"{AppStrings.ImagesPath}\question.png", UriKind.Relative));
                     break;
                 case MessageDialogType.Warn:
                     DialogImage.Source = new BitmapImage(new Uri($@"{AppStrings.ImagesPath}\warn.png", UriKind.Relative));

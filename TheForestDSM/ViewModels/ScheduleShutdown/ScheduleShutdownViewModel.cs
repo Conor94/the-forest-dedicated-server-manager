@@ -156,12 +156,12 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
         {
             if (!ShutdownServiceDataValidator.ValidateShutdownTime(DateInput.Value, out string _))
             {
-                new MessageDialog("Invalid shutdown time",
-                                  $"Shutdown time cannot be in the past. Current time is {DateTime.Now} and you attempted to schedule a shutdown for {DateInput.Value}.",
+                new MessageDialog(AppStrings.InvalidShutdownTime_DialogTitle,
+                                  string.Format(AppStrings.InvalidShutdownTime_DialogContent, DateTime.Now, DateInput.Value),
                                   MessageDialogType.Warn).ShowDialog();
             }
 
-            if (new MessageDialog("Confirm scheduled shutdown", $"Are you sure you want to schedule a shutdown for {DateInput.Value}?", MessageDialogType.Info, "Yes", "No").ShowDialog() == true)
+            if (new MessageDialog(AppStrings.ScheduleShutdownConfirmation_Title, string.Format(AppStrings.ScheduleShutdownConfirmation_Content, DateInput.Value), MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
             {
                 // Close the window and send shutdown information to HomePageViewModel
                 EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();

@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
 using TheForestDSM.Views;
 using TheForestDSM.Views.ScheduleShutdown;
@@ -201,7 +202,7 @@ namespace TheForestDSM.ViewModels
 
         private void ShutdownServerExecute()
         {
-            if (MessageBox.Show("Are you sure you want to shutdown the server?\n\nShutting down the server will also cancel any scheduled shutdowns.", "Shutdown Server", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (new MessageDialog(AppStrings.ShutdownServerConfirmation_DialogTitle, AppStrings.ShutdownServerConfirmation_DialogContent, MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
             {
                 Process[] processes = Process.GetProcessesByName(Config.ServerProcessName);
                 if (processes.Length == 0)

@@ -120,15 +120,37 @@
   <data name="ImagesPath" xml:space="preserve">
     <value>\TheForestDSM;component\Images</value>
   </data>
-  <data name="RefreshIntervalDialog_Content" xml:space="preserve">
+  <data name="InvalidShutdownTime_DialogContent" xml:space="preserve">
+    <value>Shutdown time cannot be in the past. Current time is {0} and you attempted to schedule a shutdown for {1}.</value>
+  </data>
+  <data name="InvalidShutdownTime_DialogTitle" xml:space="preserve">
+    <value>Invalid shutdown time</value>
+  </data>
+  <data name="RefreshIntervalDialog_DialogContent" xml:space="preserve">
     <value>The refresh interval sets how frequently this application will refresh the user interface. Examples of refreshing the user interface are disabling/enabling buttons and changing the server status.
 
 Increase this value if you're having performance issues and decrease the value to ensure the application always displays the most up-to-date information.</value>
+    <comment>Multi-line</comment>
   </data>
-  <data name="RefreshIntervalDialog_Title" xml:space="preserve">
+  <data name="RefreshIntervalDialog_DialogTitle" xml:space="preserve">
     <value>Refresh Interval Information</value>
+  </data>
+  <data name="ScheduleShutdownConfirmation_Content" xml:space="preserve">
+    <value>Are you sure you want to schedule a shutdown for {0}?</value>
+  </data>
+  <data name="ScheduleShutdownConfirmation_Title" xml:space="preserve">
+    <value>Confirm scheduled shutdown</value>
   </data>
   <data name="ServiceName" xml:space="preserve">
     <value>TheForestDSMShutdownService</value>
+  </data>
+  <data name="ShutdownServerConfirmation_DialogContent" xml:space="preserve">
+    <value>Are you sure you want to shutdown the server?
+
+Shutting down the server will also cancel any scheduled shutdowns.</value>
+    <comment>Multi-line</comment>
+  </data>
+  <data name="ShutdownServerConfirmation_DialogTitle" xml:space="preserve">
+    <value>Shutdown Server</value>
   </data>
 </root>

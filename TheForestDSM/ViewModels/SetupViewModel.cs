@@ -120,8 +120,8 @@ namespace TheForestDSM.ViewModels
 
         private void RefreshIntervalInfoExecute()
         {
-            new MessageDialog(AppStrings.RefreshIntervalDialog_Title, AppStrings.RefreshIntervalDialog_Content, MessageDialogType.Info)
-                          .ShowDialog();
+            new MessageDialog(AppStrings.RefreshIntervalDialog_DialogTitle, AppStrings.RefreshIntervalDialog_DialogContent, MessageDialogType.Info)
+                             .ShowDialog();
         }
 
         private void CloseWindow()
