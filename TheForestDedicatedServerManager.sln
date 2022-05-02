@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDSM.UninstallClean
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDSM.Utilities", "TheForestDSM.Utilities\TheForestDSM.Utilities.csproj", "{1805CD89-6AB3-47C8-98EB-BF81F52CBDA2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheForestDSM.Logging", "TheForestDSM.Logging\TheForestDSM.Logging.csproj", "{4BF53201-D835-4280-BCC2-27348543FF1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{1805CD89-6AB3-47C8-98EB-BF81F52CBDA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1805CD89-6AB3-47C8-98EB-BF81F52CBDA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1805CD89-6AB3-47C8-98EB-BF81F52CBDA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BF53201-D835-4280-BCC2-27348543FF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BF53201-D835-4280-BCC2-27348543FF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BF53201-D835-4280-BCC2-27348543FF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BF53201-D835-4280-BCC2-27348543FF1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 
 namespace TheForestDSM.Events
 {
-    public class CloseWindowRequestEvent : PubSubEvent
+    public class ScheduleShutdownViewCloseRequest : PubSubEvent
     {
     }
 }

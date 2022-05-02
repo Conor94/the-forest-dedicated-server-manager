@@ -3,7 +3,7 @@ using Prism.Events;
 
 namespace TheForestDSM.Events
 {
-    public class ConfigurationSavedEvent : PubSubEvent<Configuration>
+    public class ShutdownScheduledEvent : PubSubEvent<ShutdownServiceData>
     {
     }
 }

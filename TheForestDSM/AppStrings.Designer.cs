@@ -61,22 +61,67 @@ namespace TheForestDSM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \TheForestDSM;component\Images.
+        /// </summary>
+        internal static string ImagesPath {
+            get {
+                return ResourceManager.GetString("ImagesPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutdown time cannot be in the past. Current time is {0} and you attempted to schedule a shutdown for {1}..
+        /// </summary>
+        internal static string InvalidShutdownTime_DialogContent {
+            get {
+                return ResourceManager.GetString("InvalidShutdownTime_DialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid shutdown time.
+        /// </summary>
+        internal static string InvalidShutdownTime_DialogTitle {
+            get {
+                return ResourceManager.GetString("InvalidShutdownTime_DialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The refresh interval sets how frequently this application will refresh the user interface. Examples of refreshing the user interface are disabling/enabling buttons and changing the server status.
         ///
         ///Increase this value if you&apos;re having performance issues and decrease the value to ensure the application always displays the most up-to-date information..
         /// </summary>
-        internal static string RefreshIntervalDialog_Content {
+        internal static string RefreshIntervalDialog_DialogContent {
             get {
-                return ResourceManager.GetString("RefreshIntervalDialog_Content", resourceCulture);
+                return ResourceManager.GetString("RefreshIntervalDialog_DialogContent", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Refresh Interval Information.
         /// </summary>
-        internal static string RefreshIntervalDialog_Title {
+        internal static string RefreshIntervalDialog_DialogTitle {
             get {
-                return ResourceManager.GetString("RefreshIntervalDialog_Title", resourceCulture);
+                return ResourceManager.GetString("RefreshIntervalDialog_DialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to schedule a shutdown for {0}?.
+        /// </summary>
+        internal static string ScheduleShutdownConfirmation_Content {
+            get {
+                return ResourceManager.GetString("ScheduleShutdownConfirmation_Content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm scheduled shutdown.
+        /// </summary>
+        internal static string ScheduleShutdownConfirmation_Title {
+            get {
+                return ResourceManager.GetString("ScheduleShutdownConfirmation_Title", resourceCulture);
             }
         }
         
@@ -86,6 +131,26 @@ namespace TheForestDSM {
         internal static string ServiceName {
             get {
                 return ResourceManager.GetString("ServiceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to shutdown the server?
+        ///
+        ///Shutting down the server will also cancel any scheduled shutdowns..
+        /// </summary>
+        internal static string ShutdownServerConfirmation_DialogContent {
+            get {
+                return ResourceManager.GetString("ShutdownServerConfirmation_DialogContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutdown Server.
+        /// </summary>
+        internal static string ShutdownServerConfirmation_DialogTitle {
+            get {
+                return ResourceManager.GetString("ShutdownServerConfirmation_DialogTitle", resourceCulture);
             }
         }
     }

@@ -9,8 +9,9 @@
     Title="{Binding Title}"
     Width="800"
     Height="450"
-    mc:Ignorable="d"
-    ResizeMode="CanMinimize">
+    ResizeMode="CanMinimize"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:HomePageViewModel}">
             <views:HomePageView />

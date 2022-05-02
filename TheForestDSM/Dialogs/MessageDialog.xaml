@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="TheForestDSM.Dialogs.InfoDialog"
+    x:Class="TheForestDSM.Dialogs.MessageDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +10,7 @@
     Background="WhiteSmoke"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
-    SizeToContent="WidthAndHeight"
-    WindowStartupLocation="CenterOwner">
+    SizeToContent="WidthAndHeight">
     <Grid
         x:Name="InfoDialogGrid"
         Width="{Binding ActualWidth, ElementName=InfoDialogWindow}"
@@ -19,24 +18,33 @@
 
         <DockPanel x:Name="InfoDialogDockPanel" Margin="10">
             <Image
+                x:Name="DialogImage"
                 Width="50"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Source="..\Images\info.png" />
+                VerticalAlignment="Top" />
 
             <StackPanel x:Name="InfoDialogStackPanel" Margin="10,0,10,0">
                 <TextBlock
                     x:Name="ContentBox"
                     Width="{Binding ContentBoxWidth}"
                     TextWrapping="Wrap" />
-                <Button
-                    Width="80"
-                    Height="30"
-                    Margin="-45,10,0,0"
-                    VerticalAlignment="Bottom"
-                    Click="OkButton_Click"
-                    Content="Ok"
-                    IsDefault="True" />
+                <DockPanel Margin="0,10,0,0">
+                    <Button
+                        x:Name="PositiveButton"
+                        Width="80"
+                        Height="30"
+                        VerticalAlignment="Bottom"
+                        Click="OkButton_Click"
+                        Content="Ok"
+                        IsDefault="True" />
+                    <Button
+                        x:Name="NegativeButton"
+                        Width="80"
+                        Height="30"
+                        VerticalAlignment="Bottom"
+                        Click="CancelButton_Click"
+                        Content="Cancel" />
+                </DockPanel>
             </StackPanel>
 
         </DockPanel>

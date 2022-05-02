@@ -1,5 +1,4 @@
-﻿using DataAccess.Validators;
-using PrismMvvmBase.Bindable;
+﻿using PrismMvvmBase.Bindable;
 
 namespace DataAccess.Models
 {
@@ -9,11 +8,6 @@ namespace DataAccess.Models
         private string mShutdownTime;
         private int mId;
         private bool mIsShutdownScheduled;
-
-        public ShutdownServiceData()
-        {
-            AddValidator(nameof(ShutdownTime), new DataErrorValidator<string>(ShutdownServiceDataValidator.ValidateShutdownTime));
-        }
 
         public int Id
         {

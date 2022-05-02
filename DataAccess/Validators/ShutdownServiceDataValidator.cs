@@ -4,18 +4,14 @@ namespace DataAccess.Validators
 {
     public static class ShutdownServiceDataValidator
     {
-        public static bool ValidateShutdownTime(string shutdownTime, out string errorMessage)
+        public static bool ValidateShutdownTime(DateTime shutdownTime, out string errorMessage)
         {
             bool isValid = false;
 
             errorMessage = "";
-            if (!string.IsNullOrWhiteSpace(shutdownTime))
+            if (!string.IsNullOrWhiteSpace(shutdownTime.ToString()))
             {
-                if (!DateTime.TryParse(shutdownTime, out DateTime tmpShutdownTime))
-                {
-                    errorMessage = "Shutdown time is not valid.";
-                }
-                else if (tmpShutdownTime < DateTime.Now)
+                if (shutdownTime < DateTime.Now)
                 {
                     errorMessage = "Shutdown time cannot be in the past.";
                 }
