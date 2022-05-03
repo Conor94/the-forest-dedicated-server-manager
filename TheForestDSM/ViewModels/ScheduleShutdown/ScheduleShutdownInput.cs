@@ -1,5 +1,4 @@
 ﻿using PrismMvvmBase.Bindable;
-using System;
 using System.Windows;
 
 namespace TheForestDSM.ViewModels.ScheduleShutdown

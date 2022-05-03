@@ -1,5 +1,4 @@
 ﻿using DataAccess.Models;
-using DataAccess.Schemas;
 using DataAccess.Validators;
 using Prism.Commands;
 using Prism.Events;
@@ -111,6 +110,8 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
             set => SetProperty(ref mIsMachineShutdown, value);
         }
 
+        public ShutdownServiceData Data { get; set; }
+
         public DelegateCommand ScheduleShutdownCommand
         {
             get => mScheduleShutdownCommand ?? (mScheduleShutdownCommand = new DelegateCommand(ScheduleShutdownExecute));
@@ -159,38 +160,34 @@ namespace TheForestDSM.ViewModels.ScheduleShutdown
                                   MessageDialogType.Warn).ShowDialog();
             }
 
-            if (new MessageDialog(AppStrings.ScheduleShutdownConfirmation_Title, string.Format(AppStrings.ScheduleShutdownConfirmation_Content, DateInput.Value), MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
+            if (SelectedShutdownFormat == ShutdownFormat.@in)
+            {
+                DateTime shutdownTime;
+                if (SelectedTimeFormat == TimeFormat.hours)
+                {
+                    shutdownTime = DateTime.Now.AddHours(HoursInput.Value);
+                }
+                else
+                {
+                    shutdownTime = DateTime.Now.AddMinutes(MinutesInput.Value);
+                }
+
+                Data.ShutdownTime = shutdownTime.ToString();
+            }
+            else if (SelectedShutdownFormat == ShutdownFormat.at)
+            {
+                Data.ShutdownTime = DateInput.Value.ToString();
+            }
+
+            if (new MessageDialog(AppStrings.ScheduleShutdownConfirmation_Title, string.Format(AppStrings.ScheduleShutdownConfirmation_Content, Data.ShutdownTime), MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
             {
                 // Close the window and send shutdown information to HomePageViewModel
                 EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
 
-                ShutdownServiceData data = new ShutdownServiceData()
-                {
-                    Id = ShutdownServiceDataSchema.ID_DEFAULT_VALUE,
-                    IsMachineShutdown = IsMachineShutdown,
-                    IsShutdownScheduled = true
-                };
+                Data.IsMachineShutdown = IsMachineShutdown;
+                Data.IsShutdownScheduled = true;
 
-                if (SelectedShutdownFormat == ShutdownFormat.@in)
-                {
-                    DateTime shutdownTime;
-                    if (SelectedTimeFormat == TimeFormat.hours)
-                    {
-                        shutdownTime = DateTime.Now.AddHours(HoursInput.Value);
-                    }
-                    else
-                    {
-                        shutdownTime = DateTime.Now.AddMinutes(MinutesInput.Value);
-                    }
-
-                    data.ShutdownTime = shutdownTime.ToString();
-                }
-                else if (SelectedShutdownFormat == ShutdownFormat.at)
-                {
-                    data.ShutdownTime = DateInput.Value.ToString();
-                }
-
-                EventAggregator.GetEvent<ShutdownScheduledEvent>().Publish(data);
+                EventAggregator.GetEvent<ShutdownScheduledEvent>().Publish(Data);
                 EventAggregator.GetEvent<ScheduleShutdownViewCloseRequest>().Publish();
             }
         }

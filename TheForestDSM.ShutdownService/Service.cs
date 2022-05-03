@@ -85,11 +85,7 @@ namespace TheForestDSM.ShutdownService
         {
             try
             {
-                ShutdownServiceData.IsShutdownScheduled = false;
-                ShutdownServiceData.IsMachineShutdown = false;
-                ShutdownServiceData.ShutdownTime = "";
-
-                ShutdownServiceDataRepo.Update(ShutdownServiceData);
+                UpdateShutdownServiceData();
             }
             catch (Exception e)
             {
@@ -145,7 +141,7 @@ namespace TheForestDSM.ShutdownService
                     if (processes.Length > 1)
                     {
                         Logger.Warn($"Multiple dedicated server instances were found when the {ServiceName} was terminating the dedicated server. " +
-                                                     $"{ServiceName} will attempt to close all instances of the dedicated server.");
+                                    $"{ServiceName} will attempt to close all instances of the dedicated server.");
 
                         multipleInstances = true;
                     }
@@ -165,8 +161,11 @@ namespace TheForestDSM.ShutdownService
                         }
                     }
 
+                    bool isMachineShutdown = ShutdownServiceData.IsMachineShutdown;
+                    UpdateShutdownServiceData();
+
                     // Shutdown the system if needed
-                    if (ShutdownServiceData.IsMachineShutdown)
+                    if (isMachineShutdown)
                     {
                         ShutdownMachine();
                     }
@@ -237,6 +236,15 @@ namespace TheForestDSM.ShutdownService
             {
                 Logger.Error(e, "Error occurred when the shutdown service attempted to shutdown the system.");
             }
+        }
+
+        private void UpdateShutdownServiceData()
+        {
+            ShutdownServiceData.IsShutdownScheduled = false;
+            ShutdownServiceData.IsMachineShutdown = false;
+            ShutdownServiceData.ShutdownTime = "";
+
+            ShutdownServiceDataRepo.Update(ShutdownServiceData);
         }
     }
 }
