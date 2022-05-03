@@ -88,6 +88,19 @@ namespace TheForestDSM {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Try manually stopping {0} using Windows Services Manager (services.msc). To manually stop the service using services.msc follow these steps:
+        ///  1. Press Windows Key + R to open Run
+        ///  2. Type services.msc and click Ok
+        ///  3. In the list of services, locate {0}
+        ///  4. Right-click {0} and select Stop.
+        /// </summary>
+        internal static string ManuallyStopServiceInstructions {
+            get {
+                return ResourceManager.GetString("ManuallyStopServiceInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The refresh interval sets how frequently this application will refresh the user interface. Examples of refreshing the user interface are disabling/enabling buttons and changing the server status.
         ///
         ///Increase this value if you&apos;re having performance issues and decrease the value to ensure the application always displays the most up-to-date information..
