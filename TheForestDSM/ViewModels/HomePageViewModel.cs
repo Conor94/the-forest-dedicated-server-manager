@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using TheForestDSM.Dialogs;
@@ -24,6 +23,8 @@ namespace TheForestDSM.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
+        private const int TIMEOUT_MILLISECONDS = 10000;
+
         private readonly ConfigurationRepository mConfigRepo;
         private readonly ShutdownServiceDataRepository mShutdownServiceDataRepo;
 
@@ -202,59 +203,74 @@ namespace TheForestDSM.ViewModels
 
         private void ShutdownServerExecute()
         {
-            if (new MessageDialog(AppStrings.ShutdownServerConfirmation_DialogTitle, AppStrings.ShutdownServerConfirmation_DialogContent, MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
+            try
             {
-                Process[] processes = Process.GetProcessesByName(Config.ServerProcessName);
-                if (processes.Length == 0)
+                if (new MessageDialog(AppStrings.ShutdownServerConfirmation_DialogTitle, AppStrings.ShutdownServerConfirmation_DialogContent, MessageDialogType.Question, "Yes", "No").ShowDialog() == true)
                 {
-                    WriteOutput("Dedicated server is not running.", "Attempted to shutdown the server while the server was not running.", LogLevel.Warn);
-                }
-                else
-                {
-                    bool multipleInstances = false; // Used to write a different log message if there's multiple dedicated server instances
-                    if (processes.Length > 1)
+                    Process[] processes = Process.GetProcessesByName(Config.ServerProcessName);
+                    if (processes.Length == 0)
                     {
-                        WriteOutput($"Multiple dedicated server instances were found. Attempting to shutdown all instances...", LogLevel.Warn);
-
-                        multipleInstances = true;
+                        WriteOutput("Dedicated server is not running.", "Attempted to shutdown the server while the server was not running.", LogLevel.Warn);
                     }
-
-                    for (int i = 0; i < processes.Length; i++)
+                    else
                     {
-                        processes[i].Kill();
-                        processes[i].WaitForExit(10000);
-
-                        if (processes[i].HasExited)
+                        bool multipleInstances = false; // Used to write a different log message if there's multiple dedicated server instances
+                        if (processes.Length > 1)
                         {
-                            WriteOutput($"Dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")} has been shutdown.", LogLevel.Info);
+                            WriteOutput($"Multiple dedicated server instances were found. Attempting to shutdown all instances...", LogLevel.Warn);
+
+                            multipleInstances = true;
                         }
-                        else
+
+                        for (int i = 0; i < processes.Length; i++)
                         {
-                            WriteOutput($"Failed to shutdown the dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")}. " +
-                                         "Try shutting down the dedicated server manually or restarting your computer.", LogLevel.Error);
+                            processes[i].Kill();
+
+                            if (processes[i].WaitForExit(TIMEOUT_MILLISECONDS))
+                            {
+                                WriteOutput($"Dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")} has been shutdown.", LogLevel.Info);
+                            }
+                            else
+                            {
+                                WriteOutput($"Failed to shutdown the dedicated server{(multipleInstances ? $" instance #{i + 1}" : "")}. " +
+                                             "Try shutting down the dedicated server manually or restarting your computer.", LogLevel.Error);
+                            }
                         }
+
+                        ShutdownServerCommand.RaiseCanExecuteChanged();
+                        StartServerCommand.RaiseCanExecuteChanged();
+                        ScheduleShutdownCommand.RaiseCanExecuteChanged();
+                        RaiseServerStatusChanged();
+
+                        // Update the database
+                        ShutdownServiceData.IsShutdownScheduled = false;
+                        ShutdownServiceData.ShutdownTime = "";
+                        mShutdownServiceDataRepo.Update(ShutdownServiceData);
+
+                        // Stop the shutdown service if it's running
+                        ServiceController controller = new ServiceController(mServiceName);
+                        if (controller.Status == ServiceControllerStatus.Running)
+                        {
+                            controller.Stop();
+                            controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(TIMEOUT_MILLISECONDS));
+                        }
+
+                        CancelShutdownCommand.RaiseCanExecuteChanged();
                     }
-
-                    ShutdownServerCommand.RaiseCanExecuteChanged();
-                    StartServerCommand.RaiseCanExecuteChanged();
-                    ScheduleShutdownCommand.RaiseCanExecuteChanged();
-                    RaiseServerStatusChanged();
-
-                    // Update the database
-                    ShutdownServiceData.IsShutdownScheduled = false;
-                    ShutdownServiceData.ShutdownTime = "";
-                    mShutdownServiceDataRepo.Update(ShutdownServiceData);
-
-                    // Stop the shutdown service if it's running
-                    ServiceController controller = new ServiceController(mServiceName);
-                    if (controller.Status == ServiceControllerStatus.Running)
-                    {
-                        controller.Stop();
-                    }
-
-                    CancelShutdownCommand.RaiseCanExecuteChanged();
                 }
+
             }
+            catch (System.ServiceProcess.TimeoutException e)
+            {
+                WriteOutput($"Timeout occurred while cancelling a scheduled shutdown. The scheduled shutdown has not been cancelled. {string.Format(AppStrings.ManuallyStopServiceInstructions, mServiceName)}",
+                            "Timeout occurred while cancelling a scheduled shutdown.",
+                            LogLevel.Error,
+                            e);
+            }
+            catch (Exception e)
+            {
+                WriteOutput("An unknown error occurred while shutting down the dedicated server.", LogLevel.Error, e);
+            }        
         }
         private bool ShutdownServerCanExecute()
         {
@@ -278,8 +294,16 @@ namespace TheForestDSM.ViewModels
                 if (controller.Status == ServiceControllerStatus.Running)
                 {
                     controller.Stop();
-                    controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
-
+                    try
+                    {
+                        controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(TIMEOUT_MILLISECONDS));
+                    }
+                    catch (System.ServiceProcess.TimeoutException)
+                    {
+                        // The purpose of rethrowing this exception is to provide an error message that describes the operation that timed out
+                        throw new System.ServiceProcess.TimeoutException("Timeout occurred while waiting for the shutdown service to stop before scheduling a shutdown.");
+                    }
+                    
                     output = $"Cancelled the previously scheduled shutdown. Scheduling a new shutdown for {ShutdownServiceData.ShutdownTime}.";
                 }
                 else
@@ -297,29 +321,32 @@ namespace TheForestDSM.ViewModels
                 mShutdownServiceDataRepo.Update(ShutdownServiceData);
 
                 controller.Start();
-
-                Thread.Sleep(500);
+                try
+                {
+                    controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromMilliseconds(TIMEOUT_MILLISECONDS));
+                }
+                catch (System.ServiceProcess.TimeoutException)
+                {
+                    // The purpose of rethrowing this exception is to provide an error message that describes the operation that timed out
+                    throw new System.ServiceProcess.TimeoutException("Timeout occurred while waiting for the shutdown service to start.");
+                }
 
                 ScheduleShutdownCommand.RaiseCanExecuteChanged();
                 CancelShutdownCommand.RaiseCanExecuteChanged();
 
                 WriteOutput(output, LogLevel.Info);
             }
+            catch (System.ServiceProcess.TimeoutException e)
+            {
+                WriteOutput(e.Message, LogLevel.Error, e);
+            }
+            catch (InvalidOperationException e)
+            {
+                WriteOutput("Failed to start the shutdown service. This likely occurred because the service is not installed.", LogLevel.Error, e);
+            }
             catch (Exception e)
             {
-                if (e.InnerException?.GetType() == typeof(Win32Exception))
-                {
-                    WriteOutput("Failed to start the shutdown service. This likely occurred because the service is not installed.", LogLevel.Error, e);
-                }
-                else
-                {
-                    WriteOutput("Failed to start the shutdown service due to an unknown error.", LogLevel.Error, e);
-                }
-
-                if (e.GetType() == typeof(System.ServiceProcess.TimeoutException))
-                {
-                    WriteOutput("Timeout occurred while waiting for the shutdown service to stop before scheduling a shutdown.", LogLevel.Error, e);
-                }
+                WriteOutput("Failed to start the shutdown service due to an unknown error.", LogLevel.Error, e);
             }
         }
         private bool ScheduleShutdownCanExecute()
@@ -340,7 +367,8 @@ namespace TheForestDSM.ViewModels
                     ShutdownServiceData.ShutdownTime = "";
 
                     controller.Stop();
-                    Thread.Sleep(100);
+                    controller.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromMilliseconds(TIMEOUT_MILLISECONDS));
+
                     WriteOutput("Scheduled shutdown has been cancelled.", LogLevel.Info);
 
                     ShutdownServerCommand.RaiseCanExecuteChanged();
@@ -349,12 +377,19 @@ namespace TheForestDSM.ViewModels
                     CancelShutdownCommand.RaiseCanExecuteChanged();
                 }
             }
-            catch (InvalidOperationException)
+            catch (System.ServiceProcess.TimeoutException e)
             {
-                MessageBox.Show("The service for shutting down the server is not installed on this system.",
-                                "Warning",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
+                WriteOutput($"Timeout occurred while cancelling the scheduled shutdown. The scheduled shutdown has not been cancelled. {string.Format(AppStrings.ManuallyStopServiceInstructions, mServiceName)}",
+                            "Timeout occurred while cancelling a scheduled shutdown.",
+                            LogLevel.Error,
+                            e);
+            }
+            catch (InvalidOperationException e)
+            {
+                WriteOutput("The service for shutting down the server is not installed on this system.",
+                            "Attempted to cancel a scheduled shutdown when the shutdown service was not installed.",
+                            LogLevel.Error,
+                            e);
             }
         }
         private bool CancelShutdownCanExecute()
@@ -421,7 +456,7 @@ namespace TheForestDSM.ViewModels
 
         private void WriteOutput(string appOutput, string logOutput, LogLevel logLevel, Exception e = null)
         {
-            ServerOutputText += $"{appOutput}\n";
+            ServerOutputText += $"[{DateTime.Now:yyyy-MM-dd hh:mm:ss tt}]: {appOutput}\n";
 
             if (e == null)
             {
