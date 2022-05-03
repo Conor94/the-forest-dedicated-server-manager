@@ -132,9 +132,9 @@ namespace TheForestDSM.ViewModels
 
         private void ServerArgumentsInfoExecute()
         {
-            object[] dialogContent = new object[]
+            Inline[] dialogContent = new Inline[]
             {
-                AppStrings.ServerArgumentsDialog_DialogContent,
+                new Run(AppStrings.ServerArgumentsDialog_DialogContent),
                 HyperlinkFactory.Create(AppStrings.ServerArgumentsDialog_DialogLink)
             };
 

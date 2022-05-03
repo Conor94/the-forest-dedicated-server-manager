@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace TheForestDSM.Dialogs
 {
@@ -21,42 +22,39 @@ namespace TheForestDSM.Dialogs
 
         /// <summary>Initializes a <see cref="MessageDialog"/> with only a positive button.</summary>
         /// <param name="title">The title for the dialog.</param>
-        /// <param name="content">The content displayed by the dialog. Only <see cref="string"/> and <see cref="Hyperlink"/> types are supported.</param>
+        /// <param name="content">
+        /// The content displayed by the dialog.<para/>
+        /// For information about what content can be displayed, refer to derived classes listed here: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.windows.documents.inline?view=netframework-4.7.2"/>.
+        /// </param>
         /// <param name="type">The type of dialog. Refer to <see cref="MessageDialogType"/> for the available types.</param>
         /// <param name="positiveButtonText">The text for the positive button.</param>
         /// <exception cref="ArgumentException">Thrown if an invalid type is for <paramref name="content"/>.</exception>
-        public MessageDialog(string title, object[] content, MessageDialogType type, string positiveButtonText = "Ok") : this(title, content, type, positiveButtonText, null)
+        public MessageDialog(string title, Inline[] content, MessageDialogType type, string positiveButtonText = "Ok") : this(title, content, type, positiveButtonText, null)
         {
         }
 
         /// <summary>Initializes a <see cref="MessageDialog"/> with positive and negative button.</summary>
         /// <param name="title">The title for the dialog.</param>
-        /// <param name="content">The content displayed by the dialog. Only <see cref="string"/> and <see cref="Hyperlink"/> types are supported.</param>
+        /// <param name="content">
+        /// The content displayed by the dialog.<para/>
+        /// For information about what content can be displayed, refer to derived classes listed here: <a href="https://docs.microsoft.com/en-us/dotnet/api/system.windows.documents.inline?view=netframework-4.7.2"/>.
+        /// </param>
         /// <param name="type">The type of dialog. Refer to <see cref="MessageDialogType"/> for the available types.</param>
         /// <param name="positiveButtonText">The text for the positive button.</param>
         /// <param name="negativeButtonText">The text for the negative button.</param>
         /// <exception cref="ArgumentException">Thrown if an invalid type is for <paramref name="content"/>.</exception>
-        public MessageDialog(string title, object[] content, MessageDialogType type, string positiveButtonText, string negativeButtonText) : this(title, "", type, positiveButtonText, negativeButtonText)
+        public MessageDialog(string title, Inline[] content, MessageDialogType type, string positiveButtonText, string negativeButtonText) : this(title, "", type, positiveButtonText, negativeButtonText)
         {
-            // Can't use ContentBox.Inlines.AddRange(content) because it throws this exception:
-            // System.ArgumentException: 'An item of collection 'range' has unexpected type Inline (expected type was Inline). Parameter name: value'
-
-            foreach (object item in content)
+            ContentBox.Inlines.AddRange(content.Select((element) =>
             {
-                if (item is string str)
+                if (element is Hyperlink link)
                 {
-                    ContentBox.Inlines.Add(str);
+                    link.RequestNavigate += Link_RequestNavigate;
+                    return link;
                 }
-                else if (item is Hyperlink element)
-                {
-                    element.RequestNavigate += Link_RequestNavigate;
-                    ContentBox.Inlines.Add(element);
-                }
-                else
-                {
-                    throw new ArgumentException($"Only 'string' and 'Hyperlink' types are supported for content.", nameof(content));
-                }
-            }
+
+                return element;
+            }));
         }
 
         /// <summary>Initializes a <see cref="MessageDialog"/> with positive and negative button.</summary>
