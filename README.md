@@ -21,6 +21,11 @@ The Forest Dedicated Server: https://theforest.gamepedia.com/Dedicated_Servers
 
 <img src="Screenshots/app-shutdown-in-minutes.png" alt="Shutting down the server after a given period of time" title="Shutting down the server after a given period of time" width="700"/>
 
+### Settings
+<img src="Screenshots/app-settings-screen.png" alt="Settings screen" title="Settings screen" width="700"/>
+
+<img src="Screenshots/app-settings-screen-server-arguments-info.png" alt="Settings screen information dialog" title="Settings screen information dialog" width="700"/>
+
 ## NuGet Packages
 This program uses code that I have published as a NuGet package on a local server. The code is published to GitHub here:
 * https://github.com/Conor94/nuget-packages/tree/master/PrismMvvmBase
