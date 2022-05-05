@@ -12,8 +12,6 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Media;
-using System.Windows.Threading;
 using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
 using TheForestDSM.Views;
@@ -31,15 +29,19 @@ namespace TheForestDSM.ViewModels
         private Logger Logger => LogManager.GetCurrentClassLogger();
 
         public Configuration Config { get; private set; }
-        public ShutdownServiceData ShutdownServiceData { get; private set; }
-        public bool UpdateUiThreadIsRunning { get; private set; }
+        public ShutdownServiceData ShutdownServiceData
+        {
+            get => mShutdownServiceData;
+            set => SetProperty(ref mShutdownServiceData, value);
+        }
 
         // Private only fields
         private readonly string mServiceName = AppStrings.ServiceName;
-
         // Fields with public properties
         private string mServerOutputText;
-        private Brush mServerStatusColour;
+        private bool mIsServerRunning;
+        private bool mIsShutdownScheduled;
+        private ShutdownServiceData mShutdownServiceData;
         // Commands
         private DelegateCommand mStartServerCommand;
         private DelegateCommand mShutdownServerCommand;
@@ -54,10 +56,15 @@ namespace TheForestDSM.ViewModels
             get => mServerOutputText;
             set => SetProperty(ref mServerOutputText, value);
         }
-        public Brush ServerStatusColour
+        public bool IsServerRunning
         {
-            get => mServerStatusColour;
-            set => SetProperty(ref mServerStatusColour, value);
+            get => mIsServerRunning;
+            set => SetProperty(ref mIsServerRunning, value);
+        }
+        public bool IsShutdownScheduled
+        {
+            get => mIsShutdownScheduled;
+            set => SetProperty(ref mIsShutdownScheduled, value);
         }
         // Commands
         public DelegateCommand StartServerCommand
@@ -89,12 +96,14 @@ namespace TheForestDSM.ViewModels
         public CancellationTokenSource RefreshUIThreadCancellationTokenSource { get; private set; }
 
         public event EventHandler ServerStatusChanged;
+        public event EventHandler ScheduleShutdownStatusChanged;
         protected virtual void RaiseServerStatusChanged()
         {
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-            {
-                ServerStatusChanged?.Invoke(this, EventArgs.Empty);
-            });
+            ServerStatusChanged?.Invoke(this, EventArgs.Empty);
+        }
+        protected virtual void RaiseScheduleShutdownStatusChanged()
+        {
+            ScheduleShutdownStatusChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public HomePageViewModel(IEventAggregator eventAggregator, IContainerProvider container) : base(eventAggregator, container)
@@ -108,10 +117,10 @@ namespace TheForestDSM.ViewModels
             ShutdownServiceData = mShutdownServiceDataRepo.Read(ShutdownServiceDataSchema.ID_DEFAULT_VALUE);
 
             ServerOutputText = "";
-            ServerStatusColour = new SolidColorBrush();
 
             // Subscribe to events
-            ServerStatusChanged += OnServerStatusChange;
+            ServerStatusChanged += OnServerStatusChanged;
+            ScheduleShutdownStatusChanged += OnScheduleShutdownStatusChanged;
             ShutdownServiceData.PropertyChanged += ShutdownServiceData_PropertyChanged;
             EventAggregator.GetEvent<ConfigurationSavedEvent>().Subscribe(OnConfigurationSaved);
             EventAggregator.GetEvent<ShutdownScheduledEvent>().Subscribe(OnShutdownScheduled);
@@ -122,6 +131,7 @@ namespace TheForestDSM.ViewModels
             ScheduleShutdownCommand.RaiseCanExecuteChanged();
             CancelShutdownCommand.RaiseCanExecuteChanged();
             RaiseServerStatusChanged();
+            RaiseScheduleShutdownStatusChanged();
 
             // Start a thread to poll the shutdown service (parts of the UI need to be updated based on whether the server is running)
             RefreshUIThreadCancellationTokenSource = new CancellationTokenSource();
@@ -148,19 +158,15 @@ namespace TheForestDSM.ViewModels
             }
         }
 
-        private void OnServerStatusChange(object sender, EventArgs e)
+        private void OnServerStatusChanged(object sender, EventArgs e)
         {
-            // Check if the server is running
-            if (IsDedicatedServerRunning())
-            {
-                ServerStatusColour = new SolidColorBrush(Colors.Lime);
-            }
-            else
-            {
-                ServerStatusColour = new SolidColorBrush(Colors.Red);
-            }
+            IsServerRunning = IsDedicatedServerRunning();
         }
 
+        private void OnScheduleShutdownStatusChanged(object sender, EventArgs e)
+        {
+            ShutdownServiceData = mShutdownServiceDataRepo.Read(ShutdownServiceDataSchema.ID_DEFAULT_VALUE);
+        }
 
         private void StartServerExecute()
         {
@@ -270,7 +276,7 @@ namespace TheForestDSM.ViewModels
             catch (Exception e)
             {
                 WriteOutput("An unknown error occurred while shutting down the dedicated server.", LogLevel.Error, e);
-            }        
+            }
         }
         private bool ShutdownServerCanExecute()
         {
@@ -279,7 +285,10 @@ namespace TheForestDSM.ViewModels
 
         private void ScheduleShutdownExecute()
         {
-            Container.Resolve<ScheduleShutdownView>().ShowDialog();
+            // Need to pass in the data to keep the object reference the same. If the reference changes,
+            // the view won't respond to property changed events when the ScheduleShutdownViewModel changes properties.
+            Container.Resolve<ScheduleShutdownView>(new (Type, object)[] { (typeof(ShutdownServiceData), ShutdownServiceData) })
+                     .ShowDialog();
         }
         private void OnShutdownScheduled(ShutdownServiceData data)
         {
@@ -303,7 +312,7 @@ namespace TheForestDSM.ViewModels
                         // The purpose of rethrowing this exception is to provide an error message that describes the operation that timed out
                         throw new System.ServiceProcess.TimeoutException("Timeout occurred while waiting for the shutdown service to stop before scheduling a shutdown.");
                     }
-                    
+
                     output = $"Cancelled the previously scheduled shutdown. Scheduling a new shutdown for {ShutdownServiceData.ShutdownTime}.";
                 }
                 else
@@ -333,6 +342,7 @@ namespace TheForestDSM.ViewModels
 
                 ScheduleShutdownCommand.RaiseCanExecuteChanged();
                 CancelShutdownCommand.RaiseCanExecuteChanged();
+                RaiseScheduleShutdownStatusChanged();
 
                 WriteOutput(output, LogLevel.Info);
             }
@@ -375,6 +385,7 @@ namespace TheForestDSM.ViewModels
                     StartServerCommand.RaiseCanExecuteChanged();
                     ScheduleShutdownCommand.RaiseCanExecuteChanged();
                     CancelShutdownCommand.RaiseCanExecuteChanged();
+                    RaiseScheduleShutdownStatusChanged();
                 }
             }
             catch (System.ServiceProcess.TimeoutException e)
@@ -424,14 +435,15 @@ namespace TheForestDSM.ViewModels
                 // ContinueWith prevents an exception being thrown when the task is cancelled. The task is
                 // cancelled so that the refresh interval can be updated instantly when it's changed by the user.
                 await Task.Delay(Config.RefreshIntervalInSeconds * 1000, RefreshUIThreadCancellationTokenSource.Token)
-                      .ContinueWith(task => { });
+                          .ContinueWith(task => { });
 
                 StartServerCommand.RaiseCanExecuteChanged();
                 ShutdownServerCommand.RaiseCanExecuteChanged();
                 ScheduleShutdownCommand.RaiseCanExecuteChanged();
                 CancelShutdownCommand.RaiseCanExecuteChanged();
 
-                ServerStatusColour.Dispatcher.Invoke(() => RaiseServerStatusChanged());
+                RaiseServerStatusChanged();
+                RaiseScheduleShutdownStatusChanged();
             }
         }
 

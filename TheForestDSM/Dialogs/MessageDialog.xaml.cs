@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media.Imaging;
-using System.Linq;
 
 namespace TheForestDSM.Dialogs
 {

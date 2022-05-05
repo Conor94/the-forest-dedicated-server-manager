@@ -2,6 +2,7 @@
     x:Class="TheForestDSM.Views.HomePageView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:TheForestDSM.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
@@ -14,6 +15,14 @@
             <Setter Property="Height" Value="30" />
             <Setter Property="Width" Value="175" />
         </Style>
+
+        <Style x:Key="StatusIndicator" TargetType="controls:StatusIndicator">
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+
+            <Setter Property="DockPanel.Dock" Value="Right" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel LastChildFill="True">
@@ -22,33 +31,14 @@
             DockPanel.Dock="Top"
             Source="..\Images\Banner.bmp"
             Stretch="Fill" />
-        <StackPanel
-            Height="366"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            DockPanel.Dock="Left"
-            Orientation="Vertical">
+        <StackPanel Height="366" DockPanel.Dock="Left">
             <DockPanel LastChildFill="False">
                 <Label HorizontalContentAlignment="Right" Content="Server Status:" />
-                <Rectangle
-                    Width="20"
-                    Height="18"
-                    Fill="{Binding ServerStatusColour}" />
-                <Button
-                    Width="20"
-                    Height="19"
-                    Margin="0,0,5,0"
-                    HorizontalAlignment="Right"
-                    Command="{Binding EditSetupCommand}"
-                    DockPanel.Dock="Right">
-                    <Button.Content>
-                        <Image
-                            Width="18"
-                            Height="11"
-                            Source="..\Images\settings.png" />
-                    </Button.Content>
-                </Button>
-
+                <controls:StatusIndicator Status="{Binding IsServerRunning}" Style="{StaticResource StatusIndicator}" />
+            </DockPanel>
+            <DockPanel LastChildFill="False">
+                <Label HorizontalContentAlignment="Right" Content="Shutdown scheduled:" />
+                <controls:StatusIndicator Status="{Binding ShutdownServiceData.IsShutdownScheduled}" Style="{StaticResource StatusIndicator}" />
             </DockPanel>
             <Button
                 Command="{Binding StartServerCommand}"
@@ -71,12 +61,30 @@
                 Content="Quit"
                 Style="{StaticResource HomePageButtonStyle}" />
         </StackPanel>
-        <TextBox
-            Height="366"
-            VerticalAlignment="Top"
-            DockPanel.Dock="Right"
-            IsReadOnly="True"
-            Text="{Binding ServerOutputText, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-            TextWrapping="Wrap" />
+
+        <DockPanel LastChildFill="True">
+            <Button
+                x:Name="SettingsButton"
+                Width="30"
+                Height="{Binding Width, ElementName=SettingsButton}"
+                Margin="5,5,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{Binding EditSetupCommand}"
+                DockPanel.Dock="Right">
+                <Button.Content>
+                    <Image Width="20" Source="..\Images\settings.png" />
+                </Button.Content>
+            </Button>
+
+            <DockPanel DockPanel.Dock="Left" LastChildFill="True">
+                <TextBox
+                    BorderThickness="1,0,1,0"
+                    IsReadOnly="True"
+                    Text="{Binding ServerOutputText, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Visible" />
+            </DockPanel>
+        </DockPanel>
     </DockPanel>
 </UserControl>

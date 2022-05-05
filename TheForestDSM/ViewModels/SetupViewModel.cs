@@ -10,7 +10,6 @@ using PrismMvvmBase.Bindable;
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using TheForestDSM.Dialogs;
 using TheForestDSM.Events;
