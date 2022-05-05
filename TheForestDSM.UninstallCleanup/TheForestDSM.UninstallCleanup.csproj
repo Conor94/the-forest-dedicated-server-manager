@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8C5D8C7C-7EBE-4737-A40A-A21FE0321DA8}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TheForestDSM.UninstallCleanup</RootNamespace>
     <AssemblyName>TheForestDSM.UninstallCleanup</AssemblyName>
@@ -35,11 +35,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Management" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UninstallCleanup.cs" />
+    <Compile Include="Cleaner.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Cleaner.Designer.cs">
+      <DependentUpon>Cleaner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

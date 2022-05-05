@@ -21,13 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0BF7241EDEEE50F1873440433DA276CE"
+        "MsmKey" = "8:_16BFC8EA3706B07B48E942CD1DF3E5F6"
         "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0BF7241EDEEE50F1873440433DA276CE"
+        "MsmKey" = "8:_16BFC8EA3706B07B48E942CD1DF3E5F6"
         "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -35,6 +35,18 @@
         {
         "MsmKey" = "8:_1ED32A77333D4846B458701186DBA67A"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2387425BD886B49D06D216D33C5D2633"
+        "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2387425BD886B49D06D216D33C5D2633"
+        "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -159,6 +171,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8BCFDB7D6AF4B4BE1C4F023D2897CC92"
+        "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8BCFDB7D6AF4B4BE1C4F023D2897CC92"
+        "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9B10660484264DE3863CB2CC0B350730"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -177,25 +201,25 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A8F3852CD1DE678B1563B09A38BADB10"
+        "MsmKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B7644F8F0286E9F6CED15B065F5641A2"
+        "OwnerKey" = "8:_2387425BD886B49D06D216D33C5D2633"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B7644F8F0286E9F6CED15B065F5641A2"
         "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A8F3852CD1DE678B1563B09A38BADB10"
-        "OwnerKey" = "8:_FABC00419F7E4744B58E21C51D5F2B74"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A8F3852CD1DE678B1563B09A38BADB10"
-        "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
+        "MsmKey" = "8:_BF82F828E07246A8984CF4EB8A983476"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -213,13 +237,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C72DD49BFCECCD487D1AF16FE2B08AF6"
+        "MsmKey" = "8:_C8EFEFCA48B410AA2F26877F0BC36665"
         "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C72DD49BFCECCD487D1AF16FE2B08AF6"
+        "MsmKey" = "8:_C8EFEFCA48B410AA2F26877F0BC36665"
+        "OwnerKey" = "8:_BF82F828E07246A8984CF4EB8A983476"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8EFEFCA48B410AA2F26877F0BC36665"
         "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -243,20 +273,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_ED25D2CF238F0B90383C2CD45D59E240"
-        "OwnerKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_ED25D2CF238F0B90383C2CD45D59E240"
-        "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F416B44F511CED2E4A5800ADD4AFBAC5"
-        "OwnerKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
+        "OwnerKey" = "8:_2387425BD886B49D06D216D33C5D2633"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -269,24 +287,18 @@
         {
         "MsmKey" = "8:_F416B44F511CED2E4A5800ADD4AFBAC5"
         "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
-        "OwnerKey" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
-        "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F9484406CCE7747E202701B3D8D4CD6E"
-        "OwnerKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
+        "OwnerKey" = "8:_B7644F8F0286E9F6CED15B065F5641A2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9484406CCE7747E202701B3D8D4CD6E"
+        "OwnerKey" = "8:_2387425BD886B49D06D216D33C5D2633"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -321,18 +333,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F9484406CCE7747E202701B3D8D4CD6E"
-        "OwnerKey" = "8:_ED25D2CF238F0B90383C2CD45D59E240"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FABC00419F7E4744B58E21C51D5F2B74"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_AF7F16A498D8471EBA9E09B7D7959F81"
         "MsmSig" = "8:_UNDEFINED"
@@ -340,7 +340,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_FABC00419F7E4744B58E21C51D5F2B74"
+        "OwnerKey" = "8:_BF82F828E07246A8984CF4EB8A983476"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C8EFEFCA48B410AA2F26877F0BC36665"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_16BFC8EA3706B07B48E942CD1DF3E5F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_8BCFDB7D6AF4B4BE1C4F023D2897CC92"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2387425BD886B49D06D216D33C5D2633"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B7644F8F0286E9F6CED15B065F5641A2"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -430,18 +460,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A8F3852CD1DE678B1563B09A38BADB10"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C72DD49BFCECCD487D1AF16FE2B08AF6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2BD76029997B8517C422DCE466DA6DCC"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -454,25 +472,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0BF7241EDEEE50F1873440433DA276CE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F8CB0519CDE0FFF37966DA44BB3C6B09"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F416B44F511CED2E4A5800ADD4AFBAC5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ED25D2CF238F0B90383C2CD45D59E240"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -573,17 +573,17 @@
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_5D8561FB817045BFB4E5E5AF5B38754A"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_3EEF307658C342909129ED6EB1BAFAD5"
             {
-            "Name" = "8:Primary output from TheForestDSM.UninstallCleanup (Active)"
+            "Name" = "8:Primary output from TheForestDSM.ShutdownService (Active)"
             "Condition" = "8:"
-            "Object" = "8:_FABC00419F7E4744B58E21C51D5F2B74"
+            "Object" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
             "FileType" = "3:2"
-            "InstallAction" = "3:4"
+            "InstallAction" = "3:2"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
-            "Sequence" = "3:2"
-            "Identifier" = "8:_D0077007_495C_4A2E_B7B2_A7FBEFE172E4"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_721554E9_B98B_42EF_9BF1_0A67F796FD13"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -598,6 +598,48 @@
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
             "Identifier" = "8:_D41CC667_42CF_4436_83C6_E7E109845114"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_AF7BE1F919004235AB087B075B903190"
+            {
+            "Name" = "8:Primary output from TheForestDSM.UninstallCleanup (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_BF82F828E07246A8984CF4EB8A983476"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_EF25D975_2E1E_47D8_9EFA_7557CED916BD"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E0B57D97A7EA4C2D94C86F4882F213B8"
+            {
+            "Name" = "8:Primary output from TheForestDSM.ShutdownService (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_57E676A8AA7D4AE09C1C5039CB515F6F"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_8FFC4531_D880_4F98_9AA8_7F6F81A4C53C"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_E34D83C321FE473BB977E6C78C890103"
+            {
+            "Name" = "8:Primary output from TheForestDSM.UninstallCleanup (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_BF82F828E07246A8984CF4EB8A983476"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:2"
+            "Identifier" = "8:_2C9BBC08_4CA8_4C24_8A35_F3215429EC49"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -655,20 +697,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0BF7241EDEEE50F1873440433DA276CE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_16BFC8EA3706B07B48E942CD1DF3E5F6"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheForestDSM.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_0BF7241EDEEE50F1873440433DA276CE"
+                    "_16BFC8EA3706B07B48E942CD1DF3E5F6"
                     {
-                    "Name" = "8:Extensions.dll"
+                    "Name" = "8:TheForestDSM.Logging.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:Extensions.dll"
+            "SourcePath" = "8:TheForestDSM.Logging.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -704,6 +746,37 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2387425BD886B49D06D216D33C5D2633"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2387425BD886B49D06D216D33C5D2633"
+                    {
+                    "Name" = "8:DataAccess.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DataAccess.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2BD76029997B8517C422DCE466DA6DCC"
@@ -1047,6 +1120,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8BCFDB7D6AF4B4BE1C4F023D2897CC92"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Extensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_8BCFDB7D6AF4B4BE1C4F023D2897CC92"
+                    {
+                    "Name" = "8:Extensions.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Extensions.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B10660484264DE3863CB2CC0B350730"
             {
             "SourcePath" = "8:..\\TheForestDSM\\Images\\theforest.ico"
@@ -1098,20 +1202,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A8F3852CD1DE678B1563B09A38BADB10"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B7644F8F0286E9F6CED15B065F5641A2"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheForestDSM.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:PrismMvvmBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_A8F3852CD1DE678B1563B09A38BADB10"
+                    "_B7644F8F0286E9F6CED15B065F5641A2"
                     {
-                    "Name" = "8:TheForestDSM.Utilities.dll"
+                    "Name" = "8:PrismMvvmBase.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:TheForestDSM.Utilities.dll"
+            "SourcePath" = "8:PrismMvvmBase.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -1160,20 +1264,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C72DD49BFCECCD487D1AF16FE2B08AF6"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8EFEFCA48B410AA2F26877F0BC36665"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TheForestDSM.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TheForestDSM.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C72DD49BFCECCD487D1AF16FE2B08AF6"
+                    "_C8EFEFCA48B410AA2F26877F0BC36665"
                     {
-                    "Name" = "8:TheForestDSM.Logging.dll"
+                    "Name" = "8:TheForestDSM.Utilities.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:TheForestDSM.Logging.dll"
+            "SourcePath" = "8:TheForestDSM.Utilities.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -1253,37 +1357,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ED25D2CF238F0B90383C2CD45D59E240"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:PrismMvvmBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_ED25D2CF238F0B90383C2CD45D59E240"
-                    {
-                    "Name" = "8:PrismMvvmBase.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:PrismMvvmBase.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F416B44F511CED2E4A5800ADD4AFBAC5"
             {
             "AssemblyRegister" = "3:1"
@@ -1298,37 +1371,6 @@
                     }
                 }
             "SourcePath" = "8:System.Data.SQLite.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F8CB0519CDE0FFF37966DA44BB3C6B09"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_F8CB0519CDE0FFF37966DA44BB3C6B09"
-                    {
-                    "Name" = "8:DataAccess.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:DataAccess.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -1398,7 +1440,7 @@
             {
             "Name" = "8:#1916"
             "AlwaysCreate" = "11:TRUE"
-            "Condition" = "8:DESKTOPSHORTCUT"
+            "Condition" = "8:"
             "Transitive" = "11:TRUE"
             "Property" = "8:DesktopFolder"
                 "Folders"
@@ -1445,11 +1487,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:The Forest Dedicated Server Manager"
         "ProductCode" = "8:{EA960DE4-122B-4C2A-98A0-C7727B89F2F3}"
-        "PackageCode" = "8:{950CE7CA-C769-450E-9192-F88863F6F988}"
+        "PackageCode" = "8:{668CFF4B-8F2D-4377-A596-545F5EBDBDD0}"
         "UpgradeCode" = "8:{C7F5B12E-5026-4CDB-B060-BA83F21C8C05}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
@@ -1840,262 +1882,6 @@
                             }
                         }
                     }
-                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F47A73AA5D4247BE8B06871843F42F53"
-                    {
-                    "Sequence" = "3:200"
-                    "DisplayName" = "8:Checkboxes   (A)"
-                    "UseDynamicProperties" = "11:TRUE"
-                    "IsDependency" = "11:FALSE"
-                    "SourcePath" = "8:<VsdDialogDir>\\VsdCustomCheck1Dlg.wid"
-                        "Properties"
-                        {
-                            "BannerBitmap"
-                            {
-                            "Name" = "8:BannerBitmap"
-                            "DisplayName" = "8:#1001"
-                            "Description" = "8:#1101"
-                            "Type" = "3:8"
-                            "ContextData" = "8:Bitmap"
-                            "Attributes" = "3:4"
-                            "Setting" = "3:0"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "BannerText"
-                            {
-                            "Name" = "8:BannerText"
-                            "DisplayName" = "8:#1014"
-                            "Description" = "8:#1114"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:The Forest Dedicated Server Manager Installer"
-                            "DefaultValue" = "8:#1214"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "BodyText"
-                            {
-                            "Name" = "8:BodyText"
-                            "DisplayName" = "8:#1015"
-                            "Description" = "8:#1115"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:Please specify if you want to create a desktop shortcut."
-                            "DefaultValue" = "8:#1215"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox1Label"
-                            {
-                            "Name" = "8:Checkbox1Label"
-                            "DisplayName" = "8:#1034"
-                            "Description" = "8:#1134"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:Create desktop shortcut?"
-                            "DefaultValue" = "8:#1234"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox1Property"
-                            {
-                            "Name" = "8:Checkbox1Property"
-                            "DisplayName" = "8:#1030"
-                            "Description" = "8:#1130"
-                            "Type" = "3:14"
-                            "ContextData" = "8:Public"
-                            "Attributes" = "3:2"
-                            "Setting" = "3:2"
-                            "Value" = "8:DESKTOPSHORTCUT"
-                            "DefaultValue" = "8:CHECKBOXA1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox1Value"
-                            {
-                            "Name" = "8:Checkbox1Value"
-                            "DisplayName" = "8:#1038"
-                            "Description" = "8:#1138"
-                            "Type" = "3:2"
-                            "ContextData" = "8:Unchecked=;Checked=1"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:"
-                            "DefaultValue" = "8:"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox1Visible"
-                            {
-                            "Name" = "8:Checkbox1Visible"
-                            "DisplayName" = "8:#1026"
-                            "Description" = "8:#1126"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:1"
-                            "DefaultValue" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox2Label"
-                            {
-                            "Name" = "8:Checkbox2Label"
-                            "DisplayName" = "8:#1035"
-                            "Description" = "8:#1135"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:"
-                            "DefaultValue" = "8:#1235"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox2Property"
-                            {
-                            "Name" = "8:Checkbox2Property"
-                            "DisplayName" = "8:#1031"
-                            "Description" = "8:#1131"
-                            "Type" = "3:14"
-                            "ContextData" = "8:Public"
-                            "Attributes" = "3:2"
-                            "Setting" = "3:2"
-                            "Value" = "8:CHECKBOXA2"
-                            "DefaultValue" = "8:CHECKBOXA2"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox2Value"
-                            {
-                            "Name" = "8:Checkbox2Value"
-                            "DisplayName" = "8:#1039"
-                            "Description" = "8:#1139"
-                            "Type" = "3:2"
-                            "ContextData" = "8:Unchecked=;Checked=1"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:1"
-                            "DefaultValue" = "8:"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox2Visible"
-                            {
-                            "Name" = "8:Checkbox2Visible"
-                            "DisplayName" = "8:#1027"
-                            "Description" = "8:#1127"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:0"
-                            "DefaultValue" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox3Label"
-                            {
-                            "Name" = "8:Checkbox3Label"
-                            "DisplayName" = "8:#1036"
-                            "Description" = "8:#1136"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1236"
-                            "DefaultValue" = "8:#1236"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox3Property"
-                            {
-                            "Name" = "8:Checkbox3Property"
-                            "DisplayName" = "8:#1032"
-                            "Description" = "8:#1132"
-                            "Type" = "3:14"
-                            "ContextData" = "8:Public"
-                            "Attributes" = "3:2"
-                            "Setting" = "3:2"
-                            "Value" = "8:CHECKBOXA3"
-                            "DefaultValue" = "8:CHECKBOXA3"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox3Value"
-                            {
-                            "Name" = "8:Checkbox3Value"
-                            "DisplayName" = "8:#1040"
-                            "Description" = "8:#1140"
-                            "Type" = "3:2"
-                            "ContextData" = "8:Unchecked=;Checked=1"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:"
-                            "DefaultValue" = "8:"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox3Visible"
-                            {
-                            "Name" = "8:Checkbox3Visible"
-                            "DisplayName" = "8:#1028"
-                            "Description" = "8:#1128"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:0"
-                            "DefaultValue" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox4Label"
-                            {
-                            "Name" = "8:Checkbox4Label"
-                            "DisplayName" = "8:#1037"
-                            "Description" = "8:#1137"
-                            "Type" = "3:3"
-                            "ContextData" = "8:"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:1"
-                            "Value" = "8:#1237"
-                            "DefaultValue" = "8:#1237"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox4Property"
-                            {
-                            "Name" = "8:Checkbox4Property"
-                            "DisplayName" = "8:#1033"
-                            "Description" = "8:#1133"
-                            "Type" = "3:14"
-                            "ContextData" = "8:Public"
-                            "Attributes" = "3:2"
-                            "Setting" = "3:2"
-                            "Value" = "8:CHECKBOXA4"
-                            "DefaultValue" = "8:CHECKBOXA4"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox4Value"
-                            {
-                            "Name" = "8:Checkbox4Value"
-                            "DisplayName" = "8:#1041"
-                            "Description" = "8:#1141"
-                            "Type" = "3:2"
-                            "ContextData" = "8:Unchecked=;Checked=1"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:2"
-                            "Value" = "8:"
-                            "DefaultValue" = "8:"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                            "Checkbox4Visible"
-                            {
-                            "Name" = "8:Checkbox4Visible"
-                            "DisplayName" = "8:#1029"
-                            "Description" = "8:#1129"
-                            "Type" = "3:5"
-                            "ContextData" = "8:1;True=1;False=0"
-                            "Attributes" = "3:0"
-                            "Setting" = "3:0"
-                            "Value" = "3:0"
-                            "DefaultValue" = "3:1"
-                            "UsePlugInResources" = "11:TRUE"
-                            }
-                        }
-                    }
                 }
             }
             "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_433036B677EA49419A0D01B3AE820885"
@@ -2250,7 +2036,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_57E676A8AA7D4AE09C1C5039CB515F6F"
             {
-            "SourcePath" = "8:..\\TheForestDSM.ShutdownService\\obj\\Debug\\TheForestDSM.ShutdownService.exe"
+            "SourcePath" = "8:..\\TheForestDSM.ShutdownService\\obj\\Release\\TheForestDSM.ShutdownService.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -2278,7 +2064,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AF7F16A498D8471EBA9E09B7D7959F81"
             {
-            "SourcePath" = "8:..\\TheForestDSM\\obj\\Debug\\TheForestDSM.exe"
+            "SourcePath" = "8:..\\TheForestDSM\\obj\\Release\\TheForestDSM.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"
@@ -2304,9 +2090,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FABC00419F7E4744B58E21C51D5F2B74"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BF82F828E07246A8984CF4EB8A983476"
             {
-            "SourcePath" = "8:..\\TheForestDSM.UninstallCleanup\\obj\\Debug\\TheForestDSM.UninstallCleanup.exe"
+            "SourcePath" = "8:..\\TheForestDSM.UninstallCleanup\\obj\\Release\\TheForestDSM.UninstallCleanup.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_FAA93E79C0E841E48269996A3D764491"

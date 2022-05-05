@@ -1,13 +1,36 @@
 ﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
 using TheForestDSM.Utilities;
 
 namespace TheForestDSM.UninstallCleanup
 {
-    public class UninstallCleanup
+    [RunInstaller(true)]
+    public partial class Cleaner : Installer
     {
-        static void Main(string[] args)
+        public Cleaner()
+        {
+            InitializeComponent();
+        }
+
+        public override void Uninstall(IDictionary savedState)
+        {
+            base.Uninstall(savedState);
+
+            Cleanup();
+        }
+
+        public override void Rollback(IDictionary savedState)
+        {
+            base.Rollback(savedState);
+
+            Cleanup();
+        }
+
+        protected void Cleanup()
         {
             try
             {
