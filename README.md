@@ -26,6 +26,9 @@ The Forest Dedicated Server: https://theforest.gamepedia.com/Dedicated_Servers
 
 <img src="Screenshots/app-settings-screen-server-arguments-info.png" alt="Settings screen information dialog" title="Settings screen information dialog" width="700"/>
 
+## Installation
+Click [here](https://github.com/Conor94/the-forest-dedicated-server-manager/blob/main/TheForestDSM.Installer.msi), select Download, and then run the .msi file. You'll likely have to bypass browser security and Windows Smartscreen to run the installer after downloading it.
+
 ## NuGet Packages
 This program uses code that I have published as a NuGet package on a local server. The code is published to GitHub here:
 * https://github.com/Conor94/nuget-packages/tree/master/PrismMvvmBase
