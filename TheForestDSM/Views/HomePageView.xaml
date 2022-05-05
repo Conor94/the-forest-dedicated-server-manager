@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="WhiteSmoke"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="HomePageButtonStyle" TargetType="Button">
@@ -30,10 +31,7 @@
             DockPanel.Dock="Top"
             Source="..\Images\Banner.bmp"
             Stretch="Fill" />
-        <StackPanel
-            Height="366"
-            Background="WhiteSmoke"
-            DockPanel.Dock="Left">
+        <StackPanel Height="366" DockPanel.Dock="Left">
             <DockPanel LastChildFill="False">
                 <Label HorizontalContentAlignment="Right" Content="Server Status:" />
                 <controls:StatusIndicator Status="{Binding IsServerRunning}" Style="{StaticResource StatusIndicator}" />
